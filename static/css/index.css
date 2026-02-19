@@ -151,6 +151,11 @@ body {
     margin-bottom: 1.5rem;
 }
 
+.publication-authors .author-block {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+}
+
 .publication-venue {
     color: var(--text-secondary);
     width: fit-content;
