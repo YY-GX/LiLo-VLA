@@ -1,0 +1,156 @@
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick black bowl 1, place black bowl 1 on the plate 1, pick white bowl, place white bowl on the plate 2, open the top drawer of the cabinet, place ketchup in top drawer of the cabinet, close the top drawer of the cabinet)
+    (:regions
+      (akita_black_bowl_1_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (-0.35 0.2 -0.34 0.21)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (akita_black_bowl_2_init_region
+          (:target kitchen_table)
+          (:ranges (
+               (-0.35 -0.05 -0.34 -0.04)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (akita_black_bowl_3_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (-0.2 -0.05 -0.19 -0.04)              
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (plate_1_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (-0.15 0.20 -0.1 0.25)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (plate_2_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (-0.30 -0.3 -0.299 -0.2999)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (cream_cheese_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (0.0 -0.1 0.01 -0.0999)
+            )
+          )
+          (:yaw_rotation (
+            (0.0 0.0)
+            )
+          )
+      )
+      (basket_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (0.0 -0.33 0.01 -0.32999)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (wooden_cabinet_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (-0.0000000001 0.29999999999 0.0 0.30)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (top_side
+          (:target wooden_cabinet_1)
+      )
+      (top_region
+          (:target wooden_cabinet_1)
+      )
+      (middle_region
+          (:target wooden_cabinet_1)
+      )
+      (bottom_region
+          (:target wooden_cabinet_1)
+      )
+      (contain_region
+          (:target basket_1)
+      )
+    )
+
+  (:fixtures
+    kitchen_table - kitchen_table
+    wooden_cabinet_1 - wooden_cabinet
+  )
+
+  (:objects
+    akita_black_bowl_1 akita_black_bowl_2 akita_black_bowl_3 - akita_black_bowl
+    plate_1 plate_2 - plate
+    cream_cheese_1 - cream_cheese
+    basket_1 - basket
+  )
+
+  (:obj_of_interest
+    akita_black_bowl_1
+    akita_black_bowl_2
+    akita_black_bowl_3
+    plate_1
+    plate_2
+    ketchup_1
+    wooden_cabinet_1
+    cream_cheese_1
+    basket_1
+  )
+
+  (:init
+    (On akita_black_bowl_1 kitchen_table_akita_black_bowl_1_init_region)
+    (On akita_black_bowl_2 kitchen_table_akita_black_bowl_2_init_region)
+    (On akita_black_bowl_3 kitchen_table_akita_black_bowl_3_init_region)    
+    (On plate_1 wooden_cabinet_1_top_side)
+    (On plate_2 kitchen_table_plate_2_init_region)
+    (On cream_cheese_1 kitchen_table_cream_cheese_init_region)
+    (On basket_1 kitchen_table_basket_init_region)
+    (On wooden_cabinet_1 kitchen_table_wooden_cabinet_init_region)
+    (Open wooden_cabinet_1_bottom_region)
+  )
+
+  (:goal
+    (And 
+      (On akita_black_bowl_1 plate_1)
+      (On akita_black_bowl_2 plate_2)
+      (On akita_black_bowl_3 akita_black_bowl_2)
+      (Closed wooden_cabinet_1_bottom_region)
+      (In cream_cheese_1 basket_1_contain_region)      
+    )
+  )
+
+)
