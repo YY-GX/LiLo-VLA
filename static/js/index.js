@@ -119,24 +119,46 @@ function setupVideoCarouselAutoplay() {
     });
 }
 
-$(document).ready(function() {
-    // Check for click events on the navbar burger icon
+// Scroll-triggered fade-in animations
+(function() {
+    var sectionObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                sectionObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
 
+    document.querySelectorAll('.hero, .section').forEach(function(el) {
+        sectionObserver.observe(el);
+    });
+})();
+
+// Scene tab switching
+document.querySelectorAll('.scene-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        var scene = tab.dataset.scene;
+        document.querySelectorAll('.scene-tab').forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        document.querySelectorAll('.scene-page').forEach(function(page) { page.classList.remove('active'); });
+        var target = document.querySelector('.scene-page[data-scene="' + scene + '"]');
+        if (target) target.classList.add('active');
+        document.querySelectorAll('.scene-page video').forEach(function(v) { v.pause(); });
+    });
+});
+
+$(document).ready(function() {
     var options = {
 		slidesToScroll: 1,
 		slidesToShow: 1,
 		loop: true,
 		infinite: true,
 		autoplay: true,
-		autoplaySpeed: 5000,
+		autoplaySpeed: 8000,
     }
 
-	// Initialize all div with carousel class
     var carousels = bulmaCarousel.attach('.carousel', options);
-	
     bulmaSlider.attach();
-    
-    // Setup video autoplay for carousel
     setupVideoCarouselAutoplay();
-
 })
