@@ -1,0 +1,99 @@
+---
+// A grid of real-robot rollout clips, grouped by scene. Clips play as they
+// scroll into view and pause when they leave, which is how EGR's
+// RolloutSection behaves; prefers-reduced-motion disables it entirely.
+type Clip = {
+  src: string;
+  poster: string;
+  task: string;
+  protocol: string;
+  sr: string;
+};
+
+type Group = {
+  label: string;
+  clips: Clip[];
+};
+
+interface Props {
+  groups: Group[];
+}
+
+const { groups } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const prefix = base.endsWith("/") ? base : base + "/";
+---
+
+<div class="not-prose full-bleed my-10 px-6">
+  <div class="mx-auto max-w-[min(72rem,100%)]">
+    {
+      groups.map((group) => (
+        <>
+          <p class="text-muted-foreground m-0 mt-8 mb-3 text-xs font-medium tracking-[0.12em] uppercase first:mt-0">
+            {group.label}
+          </p>
+          <div
+            class:list={[
+              "grid grid-cols-1 gap-4",
+              group.clips.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2",
+            ]}
+          >
+            {group.clips.map((clip) => (
+              <figure class="group relative m-0 overflow-hidden rounded-xl">
+                <video
+                  class="rollout-clip aspect-[9/10] w-full bg-black object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  src={prefix + clip.src}
+                  poster={prefix + clip.poster}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                />
+                <div class="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-3">
+                  <span class="rounded-md bg-black/55 px-2 py-0.5 text-[0.7rem] font-semibold tracking-wide text-white backdrop-blur-sm">
+                    Task {clip.task}
+                  </span>
+                  <span class="rounded-md bg-black/55 px-2 py-0.5 text-[0.7rem] font-semibold text-white tabular-nums backdrop-blur-sm">
+                    {clip.sr} SR
+                  </span>
+                </div>
+                <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-3 pt-8 text-center text-sm font-medium text-white">
+                  {clip.protocol}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const clips = document.querySelectorAll<HTMLVideoElement>(".rollout-clip");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reduced && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            if (video.preload !== "auto") video.preload = "auto";
+            video.play().catch(() => {
+              /* autoplay refused - the poster stays up */
+            });
+          } else {
+            video.pause();
+          }
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+    clips.forEach((clip) => observer.observe(clip));
+  } else {
+    clips.forEach((clip) => {
+      clip.preload = "metadata";
+    });
+  }
+</script>

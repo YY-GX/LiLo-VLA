@@ -14,8 +14,8 @@ import TwoColumns from "./components/TwoColumns.astro";
 import Video from "./components/Video.astro";
 import ResultsTable from "./components/ResultsTable.astro";
 import KeyNumbers from "./components/KeyNumbers.astro";
+import RolloutGrid from "./components/RolloutGrid.astro";
 
-import architecture from "./assets/architecture.png";
 import benchmark from "./assets/benchmark.png";
 
 <Header
@@ -182,18 +182,19 @@ LiLo-VLA is never trained on a task-level ordering at all — only on individual
 
 Execution is split in two. A **Reaching Module** moves the end-effector from wherever the last skill ended to a per-object approach pose, using a collision-aware motion planner over the scene point cloud (MPLib). An **Interaction Module** then performs the contact-rich part with an object-centric VLA policy. A geometric verifier checks each skill's effect, and a closed-loop wrapper decides what to do when it fails.
 
-<Figure>
-  <Picture slot="figure" src={architecture} alt="LiLo-VLA architecture. Top left: the Reaching Module generates an approach pose relative to the object and plans a collision-free path to it, with initial-state perturbation applied during data generation. Top right: the Interaction Module runs an object-centric VLA on a distractor-masked wrist view. Bottom: the two modules alternate along a skill chain of transport, pick, transport, place, transport, open, with failure-recovery arrows returning to the Reaching Module." priority={true} />
-  <span slot="caption">**Architecture.** The Reaching Module *(top left)* handles global transport by planning a collision-free path to an approach pose defined in the reference object's frame; the pose is perturbed during demonstration generation so the downstream policy tolerates planner and perception error at deployment. The Interaction Module *(top right)* executes the atomic skill from a wrist-view observation in which non-target objects are masked out. The system chains the two *(bottom)*, and a failed skill falls back to the Reaching Module for a reset rather than a blind retry.</span>
-</Figure>
-
-<Video
-  src={`${import.meta.env.BASE_URL}/videos/framework.mp4`}
-  poster={`${import.meta.env.BASE_URL}/videos/framework-poster.jpg`}
-  controls={false}
-/>
-
-<p class="not-prose text-muted-foreground mt-3 mb-4 text-center text-sm">The same architecture, built up one stage at a time</p>
+<div class="not-prose full-bleed my-10 px-6">
+  <div class="mx-auto max-w-[min(64rem,100%)]">
+    <video
+      class="w-full rounded-lg"
+      src={`${import.meta.env.BASE_URL}/videos/framework.mp4`}
+      poster={`${import.meta.env.BASE_URL}/videos/framework-poster.jpg`}
+      autoplay
+      loop
+      muted
+      playsinline></video>
+    <p class="text-muted-foreground mt-3 text-center text-sm">**Architecture.** The Reaching Module plans a collision-free path to an approach pose defined in the reference object's frame; the pose is perturbed during demonstration generation so the downstream policy tolerates planner and perception error. The Interaction Module then executes the atomic skill from a wrist view with non-target objects masked out. A failed skill falls back to the Reaching Module for a reset rather than a blind retry.</p>
+  </div>
+</div>
 
 <TwoColumns>
 <div slot="left">
@@ -472,61 +473,41 @@ A Franka Emika Panda with a Robotiq 2F-85 gripper and the dual-camera setup of D
   caption="5 trials per configuration, 85% success rate averaged over the 8 configurations. Standard runs the canonical configuration; Diverse Layout drastically alters the workspace and introduces unseen distractors; Change Sequence permutes the skill order and is executed zero-shot. Diverse Layout is not run on Scene C. Perception is YOLOE for detection and segmentation and FoundationPose for 6D pose; a human operator judges each skill."
 />
 
-Every rollout below is real hardware, and each clip carries its own task number and protocol in the frame.
+Every rollout below is real hardware. Clips play as they scroll into view; the badges carry the task number, the evaluation protocol and the measured success rate.
 
-<div class="not-prose full-bleed my-10 px-6">
-  <div class="mx-auto max-w-[var(--media-width)]">
-    <p class="text-muted-foreground m-0 mb-3 text-xs font-medium tracking-[0.12em] uppercase">Scene A · 4 skills</p>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/a1.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/a1.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 1 · Standard — 100% SR</figcaption>
-      </figure>
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/a2.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/a2.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 2 · Change Sequence — 80% SR</figcaption>
-      </figure>
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/a3.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/a3.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 3 · Diverse Layout — 100% SR</figcaption>
-      </figure>
-    </div>
-    <p class="text-muted-foreground m-0 mt-8 mb-3 text-xs font-medium tracking-[0.12em] uppercase">Scene B · 4 skills</p>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/b1.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/b1.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 4 · Standard — 100% SR</figcaption>
-      </figure>
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/b2.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/b2.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 5 · Change Sequence — 60% SR, 90% AP</figcaption>
-      </figure>
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/b3.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/b3.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 6 · Diverse Layout — 80% SR, 95% AP</figcaption>
-      </figure>
-    </div>
-    <p class="text-muted-foreground m-0 mt-8 mb-3 text-xs font-medium tracking-[0.12em] uppercase">Scene C · 8 skills</p>
-    <div class="grid grid-cols-1 gap-4 sm:mx-auto sm:max-w-[33rem] sm:grid-cols-2">
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/c1.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/c1.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 7 · Standard — 100% SR</figcaption>
-      </figure>
-      <figure class="m-0">
-        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/c2.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/c2.jpg`} controls muted loop playsinline preload="none"></video>
-        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 8 · Change Sequence — 60% SR, 85% AP</figcaption>
-      </figure>
-    </div>
-  </div>
-</div>
-
-The 8-skill Change Sequence on Scene C is the result to weigh: an ordering the system has never executed, on hardware, from a policy that has only ever seen individual skills, finishing 85% of the chain.
+<RolloutGrid
+  groups={[
+    {
+      label: "Scene A · 4 skills",
+      clips: [
+        { src: "static/videos/a1.mp4", poster: "static/videos/posters/a1.jpg", task: "1", protocol: "Standard", sr: "100%" },
+        { src: "static/videos/a2.mp4", poster: "static/videos/posters/a2.jpg", task: "2", protocol: "Change Sequence", sr: "80%" },
+        { src: "static/videos/a3.mp4", poster: "static/videos/posters/a3.jpg", task: "3", protocol: "Diverse Layout", sr: "100%" },
+      ],
+    },
+    {
+      label: "Scene B · 4 skills",
+      clips: [
+        { src: "static/videos/b1.mp4", poster: "static/videos/posters/b1.jpg", task: "4", protocol: "Standard", sr: "100%" },
+        { src: "static/videos/b2.mp4", poster: "static/videos/posters/b2.jpg", task: "5", protocol: "Change Sequence", sr: "60%" },
+        { src: "static/videos/b3.mp4", poster: "static/videos/posters/b3.jpg", task: "6", protocol: "Diverse Layout", sr: "80%" },
+      ],
+    },
+    {
+      label: "Scene C · 8 skills",
+      clips: [
+        { src: "static/videos/c1.mp4", poster: "static/videos/posters/c1.jpg", task: "7", protocol: "Standard", sr: "100%" },
+        { src: "static/videos/c2.mp4", poster: "static/videos/posters/c2.jpg", task: "8", protocol: "Change Sequence", sr: "60%" },
+      ],
+    },
+  ]}
+/>
 
 ## Run your own policy on it
 
 The benchmark ships separately from the method. Evaluating your own policy on the 21 configurations needs neither the LiLo-VLA framework nor a GPU-sized dependency tree.
 
-```bash
+```bash frame="none"
 git clone https://github.com/YY-GX/LiLo-VLA.git && cd LiLo-VLA
 pip install -e ".[libero]"          # 9 packages, not 39
 ```
@@ -549,11 +530,11 @@ for i in range(bench.get_num_tasks()):
 
 ## Limitations
 
-- **Perception is external.** On hardware, YOLOE and FoundationPose supply the detections and poses the Reaching Module plans with. Transparent and heavily occluded objects are where that breaks, and no amount of recovery compensates for a pose that was never right.
-- **Recovery cannot exceed the atomic policy.** With per-skill success $p_i$ and retry budget $K$, the recovered rate is $1-(1-p_i)^K$, which is 0 for any $K$ when $p_i$ is 0. Cooking Preparation shows it: recovery fires on 37.5% of its skills and resolves only 46.7%, because some picks never succeed. Improving the atomic skill beats enlarging $K$.
-- **The skill sequence is given, not planned.** An external symbolic or LLM/VLM planner supplies it. That is a deliberate scoping choice — it attributes every reported failure to execution rather than planning — but this is not a claim about end-to-end task planning.
-- **Simulation uses oracle poses and masks.** Deliberately, so failures trace to the policy or the planner. The `w/o Reaching` ablation is granted the same oracle and still scores 0%, which is the evidence that the result does not rest on it.
-- **The evaluation is unseeded.** Every trial starts from a bare `env.reset()`, so a single configuration's SR over 10 trials carries a wide interval, and the same configuration has been observed moving by 20 points across runs with no code change. Compare the group averages rather than individual cells, and prefer AP. The release documents this in `docs/REPRODUCTION.md`.
+- **Perception is external.** On hardware the Reaching Module plans from detections and 6D poses supplied by YOLOE and FoundationPose, which struggle with transparent or occluded objects.
+- **Recovery cannot exceed the atomic policy.** The backbone's proficiency at a single skill caps what closed-loop recovery can achieve: with per-skill success $p_i$ and budget $K$, the recovered rate is $1-(1-p_i)^K$, which stays 0 for any $K$ when $p_i$ is 0.
+- **Verification is geometric, and human on hardware.** Each skill is checked against BDDL predicates in simulation; on the real robot an operator judges success, because occlusion prevents reliable automatic verification.
+
+A natural extension integrates an LLM/VLM planner that produces the skill sequence, and evaluates planning and execution end to end.
 
 <HighlightedSection>
 
