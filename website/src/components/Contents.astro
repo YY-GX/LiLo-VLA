@@ -1,0 +1,30 @@
+---
+// One quiet line of section links under the header. The sticky PageNav takes
+// over once the reader starts scrolling; this only has to answer "what's on
+// this page" without competing with the title.
+interface Props {
+  items: { id: string; label: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="Contents" class="not-prose mt-8 mb-2">
+  <ul
+    class="text-muted-foreground m-0 flex list-none flex-wrap items-center justify-center gap-x-1 gap-y-2 p-0 text-sm"
+  >
+    {
+      items.map((item, i) => (
+        <li class="m-0 flex items-center p-0">
+          {i > 0 && <span class="text-outline/60 px-1">·</span>}
+          <a
+            href={`#${item.id}`}
+            class="hover:text-primary rounded px-1.5 py-0.5 no-underline transition-colors"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

@@ -1,0 +1,309 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "tw-animate-css";
+@plugin "@tailwindcss/forms";
+
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  &:where([data-theme="device"], [data-theme="device"] *) {
+    @media (prefers-color-scheme: dark) {
+      @slot;
+    }
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.expressive-code {
+  width: 100%;
+}
+
+html {
+  /* Enables container query units (e.g., 100cqw) for layout calculations in main. */
+  container-type: inline-size;
+}
+
+:root {
+  color-scheme: light;
+  --maximum-text-width: 44rem;
+  /* Figures and result tables share this, so every block lines up with
+     the body text. Widen it here to widen all of them at once. */
+  --media-width: 50rem;
+  --minimum-inline-margin: 1.5rem;
+  --actual-inline-margin: max(
+    var(--minimum-inline-margin),
+    (100cqw - var(--maximum-text-width)) / 2
+  );
+  --actual-text-width: calc(100cqw - 2 * var(--actual-inline-margin));
+}
+
+main {
+  margin-inline: var(--actual-inline-margin);
+}
+
+.full-bleed,
+main .katex-display {
+  margin-inline: calc(var(--actual-inline-margin) * -1);
+}
+
+.katex-display {
+  overflow: auto hidden;
+}
+
+.katex-display > .katex > .katex-html {
+  padding-inline: 1.5rem;
+  width: max-content;
+  margin-inline: auto;
+}
+
+/* Bibliography */
+.csl-entry {
+  margin-block: 1.5rem;
+  text-indent: -2rem;
+  margin-left: 2rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-accent: var(--primary-accent);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-accent: var(--secondary-accent);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-outline: var(--outline);
+
+  --radius-xs: calc(var(--radius) - 0.375rem);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+  --radius-2xl: calc(var(--radius) + 0.5rem);
+  --radius-3xl: calc(var(--radius) + 1rem);
+}
+
+/* ---------------------------------------------------------------------------
+   Palette: warm "paper + ink" theme, matching NVIDIA GEAR's ENPIRE page.
+   Values taken from that page's CSS custom properties.
+--------------------------------------------------------------------------- */
+:root {
+  /* paper */
+  --background: #fdf9f1;
+  --card: #fdf9f1;
+  --popover: #fdf9f1;
+  --muted: #f8f2e9;
+  --accent: #f8f2e9;
+  /* ink */
+  --foreground: #221810;
+  --card-foreground: #221810;
+  --popover-foreground: #221810;
+  --accent-foreground: #221810;
+  --muted-foreground: #69625d;
+  /* accents */
+  --primary: #b8482c;
+  --primary-foreground: #fdf9f1;
+  --primary-accent: #b8482c;
+  --secondary: #4a52c8;
+  --secondary-foreground: #fdf9f1;
+  --secondary-accent: #4a52c8;
+  /* status */
+  --info: #5f82ad;
+  --info-foreground: #fdf9f1;
+  --success: #486600;
+  --success-foreground: #fdf9f1;
+  --warning: #f2c84b;
+  --warning-foreground: #221810;
+  --error: #b8482c;
+  --error-foreground: #fdf9f1;
+  /* hairlines */
+  --border: #bdb5ac;
+  --input: #bdb5ac;
+  --outline: #6f6862;
+  --radius: 0.625rem;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="device"] {
+    color-scheme: dark;
+  }
+}
+
+[data-theme="dark"] {
+  --background: #0c0c0c;
+  --card: #191919;
+  --popover: #191919;
+  --muted: #191919;
+  --accent: #262626;
+  --foreground: #ffffffeb;
+  --card-foreground: #ffffffeb;
+  --popover-foreground: #ffffffeb;
+  --accent-foreground: #ffffffeb;
+  --muted-foreground: #ffffffbd;
+  --primary: #df785d;
+  --primary-foreground: #0c0c0c;
+  --primary-accent: #df785d;
+  --secondary: #747fff;
+  --secondary-foreground: #0c0c0c;
+  --secondary-accent: #747fff;
+  --info: #5f82ad;
+  --info-foreground: #0c0c0c;
+  --success: #a1df00;
+  --success-foreground: #0c0c0c;
+  --warning: #f2c84b;
+  --warning-foreground: #0c0c0c;
+  --error: #df785d;
+  --error-foreground: #0c0c0c;
+  --border: #ffffff1f;
+  --input: #ffffff3d;
+  --outline: #ffffff3d;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="device"] {
+    --background: #0c0c0c;
+    --card: #191919;
+    --popover: #191919;
+    --muted: #191919;
+    --accent: #262626;
+    --foreground: #ffffffeb;
+    --card-foreground: #ffffffeb;
+    --popover-foreground: #ffffffeb;
+    --accent-foreground: #ffffffeb;
+    --muted-foreground: #ffffffbd;
+    --primary: #df785d;
+    --primary-foreground: #0c0c0c;
+    --primary-accent: #df785d;
+    --secondary: #747fff;
+    --secondary-foreground: #0c0c0c;
+    --secondary-accent: #747fff;
+    --info: #5f82ad;
+    --info-foreground: #0c0c0c;
+    --success: #a1df00;
+    --success-foreground: #0c0c0c;
+    --warning: #f2c84b;
+    --warning-foreground: #0c0c0c;
+    --error: #df785d;
+    --error-foreground: #0c0c0c;
+    --border: #ffffff1f;
+    --input: #ffffff3d;
+    --outline: #ffffff3d;
+  }
+}
+
+/* Bind Tailwind Typography to the palette above so prose text is ink, not zinc.
+   This must sit on `body.prose`, not `:root`: the plugin defines these same
+   variables on the .prose element itself, which would shadow an inherited value. */
+body.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--primary-accent);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--outline);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-th-borders: var(--outline);
+  --tw-prose-td-borders: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-source-serif), Georgia, "Times New Roman", serif;
+}
+
+/* ENPIRE runs headings at a lighter weight with tight tracking. */
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.015em;
+  font-weight: 500;
+}
+
+/* Section headings need to outrank subheads by more than 30px vs 24px at the
+   same weight, or a 10,000px page has no landmarks. */
+.prose h2 {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.prose h3 {
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+/* A hairline above each top-level section. Headings inside the tinted bands are
+   direct children of the band, not of <main>, so they are excluded. */
+main > h2 {
+  margin-top: 4.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 4.5rem;
+}
+
+/* Two tinted bands in a row read as one chapter, not two stripes. */
+main > .full-bleed + .full-bleed {
+  margin-top: 0;
+}
+
+main > .full-bleed + h2 {
+  margin-top: 3rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+main > h3 {
+  scroll-margin-top: 4.5rem;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-outline/50 wrap-break-word;
+  }
+  button {
+    @apply cursor-pointer;
+  }
+}

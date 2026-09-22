@@ -1,0 +1,126 @@
+---
+// Result tables styled for the page rather than for LaTeX: grouped headers,
+// tabular figures, a subdued secondary metric under the headline one, and the
+// LiLo-VLA row pulled forward.
+export interface Cell {
+  value: string;
+  sub?: string;
+  strong?: boolean;
+  tone?: "positive" | "negative";
+}
+
+export interface Row {
+  label: string;
+  cells: Cell[];
+  highlight?: boolean;
+}
+
+interface Props {
+  groups?: { label: string; span: number }[];
+  columns: string[];
+  rows: Row[];
+  rowHeader?: string;
+  caption?: string;
+}
+
+const { groups, columns, rows, rowHeader = "Method", caption } = Astro.props;
+
+const toneClass = (tone?: Cell["tone"]) =>
+  tone === "positive"
+    ? "text-success"
+    : tone === "negative"
+      ? "text-muted-foreground"
+      : "";
+---
+
+<figure class="not-prose full-bleed my-8 px-6">
+  <div
+    class="border-border bg-muted/50 mx-auto w-full max-w-[var(--media-width)] overflow-x-auto overflow-y-hidden rounded-xl border [mask-image:linear-gradient(to_right,black_calc(100%-2rem),transparent)] sm:[mask-image:none]"
+  >
+    <table class="w-full border-collapse text-left tabular-nums">
+      {
+        groups && (
+          <thead>
+            <tr>
+              <th class="px-4 py-2" />
+              {groups.map((g) => (
+                <th
+                  colspan={g.span}
+                  scope="colgroup"
+                  class="text-muted-foreground border-border border-b px-4 pt-3 pb-1.5 text-center text-xs font-medium tracking-[0.12em] uppercase"
+                >
+                  {g.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+        )
+      }
+      <thead>
+        <tr class="border-outline/50 border-b">
+          <th
+            scope="col"
+            class="text-muted-foreground px-4 py-2.5 text-sm font-medium">{rowHeader}</th
+          >
+          {
+            columns.map((c) => (
+              <th scope="col" class="text-muted-foreground px-4 py-2.5 text-right text-sm font-medium whitespace-nowrap">
+                {c}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr
+              class:list={[
+                "border-border/70 border-b last:border-0",
+                row.highlight && "bg-primary/8",
+              ]}
+            >
+              <th
+                scope="row"
+                class:list={[
+                  "relative px-4 py-3 text-left font-normal whitespace-nowrap",
+                  row.highlight
+                    ? "text-primary font-medium before:bg-primary before:absolute before:inset-y-2 before:left-0 before:w-[3px] before:rounded-full before:content-['']"
+                    : "text-foreground",
+                ]}
+                set:html={row.label}
+              />
+              {row.cells.map((cell) => (
+                <td class="px-4 py-3 text-right align-middle">
+                  <div
+                    class:list={[
+                      "leading-tight whitespace-nowrap",
+                      cell.strong
+                        ? "text-foreground font-semibold"
+                        : "text-foreground/85",
+                      toneClass(cell.tone),
+                    ]}
+                  >
+                    {cell.value}
+                  </div>
+                  {cell.sub && (
+                    <div class="text-muted-foreground mt-0.5 text-xs whitespace-nowrap">
+                      {cell.sub}
+                    </div>
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  {
+    caption && (
+      <figcaption class="text-muted-foreground mx-auto mt-3 max-w-[var(--media-width)] text-center text-sm">
+        {caption}
+      </figcaption>
+    )
+  }
+</figure>

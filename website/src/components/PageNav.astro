@@ -1,0 +1,120 @@
+---
+// Sticky section rail. Appears once the hero scrolls away; the anchors are the
+// heading ids MDX already generates.
+interface Props {
+  items: { id: string; label: string }[];
+  short: string;
+  links?: { name: string; url: string }[];
+}
+
+const { items, short, links = [] } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const prefix = base.endsWith("/") ? base : base + "/";
+const href = (url: string) =>
+  /^(https?:|mailto:|#)/.test(url) ? url : prefix + url;
+---
+
+<nav
+  id="page-nav"
+  aria-label="Sections"
+  class="not-prose border-border bg-background/90 sticky top-0 z-50 -translate-y-full border-b opacity-0 backdrop-blur transition-[opacity,transform] duration-200 data-[shown]:translate-y-0 data-[shown]:opacity-100"
+>
+  <div class="mx-auto flex max-w-[72rem] items-center gap-4 px-6 py-2.5">
+    <a
+      href="#top"
+      class="text-foreground shrink-0 text-sm font-semibold tracking-tight no-underline"
+      >{short}</a
+    >
+    <ul
+      class="no-scrollbar m-0 flex flex-1 list-none gap-1 overflow-x-auto p-0 text-sm whitespace-nowrap"
+    >
+      {
+        items.map((item) => (
+          <li class="m-0 p-0">
+            <a
+              href={`#${item.id}`}
+              data-nav-link={item.id}
+              class="text-muted-foreground hover:bg-muted hover:text-foreground data-[active]:text-primary rounded-full px-2.5 py-1 no-underline data-[active]:font-medium"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="hidden shrink-0 gap-2 sm:flex">
+      {
+        links.map((link) => (
+          <a
+            href={href(link.url)}
+            class="bg-foreground text-background hover:bg-primary rounded-full px-3 py-1 text-sm no-underline transition-colors"
+          >
+            {link.name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById("page-nav");
+  const sentinel = document.querySelector("header");
+
+  if (nav && sentinel) {
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) nav.removeAttribute("data-shown");
+        else nav.setAttribute("data-shown", "");
+      },
+      { rootMargin: "-64px 0px 0px 0px" },
+    ).observe(sentinel);
+  }
+
+  const links = document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
+  const sections = [...links]
+    .map((link) => document.getElementById(link.dataset.navLink!))
+    .filter((el): el is HTMLElement => el !== null);
+
+  if (sections.length) {
+    let active = "";
+    const setActive = (id: string) => {
+      if (id === active) return;
+      active = id;
+      links.forEach((link) => {
+        if (link.dataset.navLink === id) link.setAttribute("data-active", "");
+        else link.removeAttribute("data-active");
+      });
+    };
+
+    // Whichever heading was most recently scrolled past the top of the viewport.
+    const update = () => {
+      const line = 96;
+      let current = "";
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= line) current = section.id;
+        else break;
+      }
+      // The last heading sits close to the page end, so it never clears the
+      // threshold; light it once the reader has hit the bottom.
+      if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 4) {
+        current = sections[sections.length - 1].id;
+      }
+      setActive(current);
+    };
+
+    let queued = false;
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        update();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  }
+</script>

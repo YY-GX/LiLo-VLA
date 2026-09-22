@@ -1,0 +1,25 @@
+---
+interface Props {
+  stats: { value: string; label: string; sub?: string }[];
+}
+
+const { stats } = Astro.props;
+---
+
+<dl
+  class="not-prose my-12 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2"
+>
+  {
+    stats.map((stat) => (
+      <div class="border-primary/40 border-l-2 pl-4">
+        <dd class="text-primary m-0 text-2xl font-semibold tracking-tight tabular-nums">
+          {stat.value}
+        </dd>
+        <dt class="text-foreground mt-1 text-sm leading-snug">{stat.label}</dt>
+        {stat.sub && (
+          <p class="text-muted-foreground m-0 mt-0.5 text-xs">{stat.sub}</p>
+        )}
+      </div>
+    ))
+  }
+</dl>

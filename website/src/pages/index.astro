@@ -1,0 +1,165 @@
+---
+import { Font } from "astro:assets";
+
+import Table from "../components/Table.astro";
+import PageNav from "../components/PageNav.astro";
+import BackToTop from "../components/BackToTop.astro";
+
+import "../styles/global.css";
+import "katex/dist/katex-swap.css";
+
+import { Content, frontmatter } from "../paper.mdx";
+
+interface Frontmatter {
+  title: string;
+  description?: string;
+  thumbnail?: string;
+  theme?: "device" | "light" | "dark";
+}
+
+const {
+  title,
+  description,
+  thumbnail,
+  theme = "device",
+} = frontmatter as Frontmatter;
+
+const baseUrl = import.meta.env.BASE_URL;
+const prefix = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+
+// Open Graph requires absolute URLs; a root-relative one is dropped by every
+// scraper, so build them against `site`.
+const canonical = new URL(prefix, Astro.site).href;
+const ogImage = thumbnail ? new URL(prefix + thumbnail, Astro.site).href : undefined;
+
+const navItems = [
+  { id: "reordering-should-be-free", label: "Problem" },
+  { id: "linking-object-centric-policies", label: "Method" },
+  { id: "a-benchmark-of-21-configurations", label: "Benchmark" },
+  { id: "results-in-simulation", label: "Simulation" },
+  { id: "real-robot-deployment", label: "Real robots" },
+  { id: "run-your-own-policy-on-it", label: "Use it" },
+  { id: "limitations", label: "Limitations" },
+  { id: "bibtex", label: "Cite" },
+];
+
+const authors = [
+  "Yue Yang",
+  "Shuo Cheng",
+  "Yu Fang",
+  "Homanga Bharadhwaj",
+  "Mingyu Ding",
+  "Gedas Bertasius",
+  "Daniel Szafir",
+];
+
+const paperTitle =
+  "LiLo-VLA: Compositional Long-Horizon Manipulation via Linked Object-Centric Policies";
+// The already-circulated paper URL. `public/static/pdfs/` reproduces it exactly.
+const pdfUrl = new URL(prefix + "static/pdfs/main.pdf", Astro.site).href;
+---
+
+<!doctype html>
+<html class="bg-background" lang="en" data-theme={theme}>
+  <head>
+    <meta charset="UTF-8" />
+    {description && <meta name="description" content={description} />}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="icon" href={prefix + "favicon.ico"} sizes="32x32" />
+
+    {/* Google Analytics — same property as yy-gx.github.io, EGR and HALTER. */}
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-L4FWDSZJVD"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-L4FWDSZJVD");
+    </script>
+
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="LiLo-VLA" />
+    {
+      ogImage && (
+        <>
+          <meta property="og:image" content={ogImage} />
+          <meta property="og:image:width" content="1280" />
+          <meta property="og:image:height" content="614" />
+        </>
+      )
+    }
+    <meta
+      name="twitter:card"
+      content={ogImage ? "summary_large_image" : "summary"}
+    />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    {/* Google Scholar indexes these. */}
+    <meta name="citation_title" content={paperTitle} />
+    {authors.map((author) => <meta name="citation_author" content={author} />)}
+    <meta name="citation_publication_date" content="2026" />
+    <meta name="citation_arxiv_id" content="2602.21531" />
+    <meta name="citation_pdf_url" content={pdfUrl} />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        headline: paperTitle,
+        name: paperTitle,
+        author: authors.map((name) => ({ "@type": "Person", name })),
+        description,
+        url: canonical,
+        image: ogImage,
+        datePublished: "2026",
+      })}
+    />
+
+    <Font
+      cssVariable="--font-source-serif"
+      preload={[{ subset: "latin", style: "normal" }]}
+    />
+    <Font cssVariable="--font-mono" />
+
+    <title>{title}</title>
+  </head>
+  <body
+    class="prose prose-lg max-w-none pt-10 pb-6 prose-a:text-primary-accent prose-a:font-normal prose-a:underline prose-a:decoration-dashed prose-a:underline-offset-4 prose-a:hover:decoration-solid prose-code:bg-muted prose-code:text-foreground prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-medium prose-code:before:content-none prose-code:after:content-none font-(family-name:--font-source-serif)"
+  >
+    <PageNav
+      items={navItems}
+      short="LiLo-VLA"
+      links={[
+        { name: "Paper", url: "static/pdfs/main.pdf" },
+        { name: "Code", url: "https://github.com/YY-GX/LiLo-VLA" },
+      ]}
+    />
+    <main id="top">
+      <Content components={{ table: Table }} />
+    </main>
+    <footer class="mx-auto max-w-[50rem] px-6 text-center">
+      <p class="prose-sm text-center">
+        Built with <a
+          href="https://research-template.roman.technology"
+          rel="nofollow">Roman Hauksson-Neill's project page template</a
+        >
+      </p>
+    </footer>
+    <BackToTop />
+  </body>
+</html>

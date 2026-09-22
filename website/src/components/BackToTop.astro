@@ -1,0 +1,49 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<button
+  id="back-to-top"
+  type="button"
+  aria-label="Back to top"
+  class="not-prose border-border bg-background/90 text-foreground hover:bg-foreground hover:text-background hover:border-foreground focus-visible:outline-outline pointer-events-none fixed right-5 bottom-5 z-50 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full border opacity-0 shadow-[0_2px_12px_rgba(34,24,16,0.14)] backdrop-blur transition-[opacity,transform,background-color,color,border-color] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 data-[shown]:pointer-events-auto data-[shown]:translate-y-0 data-[shown]:opacity-100 sm:right-8 sm:bottom-8"
+>
+  <Icon name="ri:arrow-up-line" class="h-5 w-5" />
+</button>
+
+<script>
+  const button = document.getElementById("back-to-top");
+
+  if (button) {
+    let queued = false;
+    const update = () => {
+      if (window.scrollY > window.innerHeight * 0.8) {
+        button.setAttribute("data-shown", "");
+      } else {
+        button.removeAttribute("data-shown");
+      }
+    };
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          update();
+        });
+      },
+      { passive: true },
+    );
+
+    button.addEventListener("click", () => {
+      const reduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    });
+
+    update();
+  }
+</script>

@@ -1,0 +1,578 @@
+---
+title: "LiLo-VLA: Compositional Long-Horizon Manipulation"
+theme: light
+description: "LiLo-VLA decomposes long-horizon manipulation into linked object-centric policies, achieving 69% simulation and 85% real-world success rates, outperforming Pi0.5 and OpenVLA-OFT."
+thumbnail: og-card.jpg
+---
+
+import Header from "./components/Header.astro";
+import HighlightedSection from "./components/HighlightedSection.astro";
+import Contents from "./components/Contents.astro";
+import Figure from "./components/Figure.astro";
+import Picture from "./components/Picture.astro";
+import TwoColumns from "./components/TwoColumns.astro";
+import Video from "./components/Video.astro";
+import ResultsTable from "./components/ResultsTable.astro";
+import KeyNumbers from "./components/KeyNumbers.astro";
+
+import architecture from "./assets/architecture.png";
+import benchmark from "./assets/benchmark.png";
+
+<Header
+  title="LiLo-VLA: Compositional Long-Horizon Manipulation via Linked Object-Centric Policies"
+  subtitle="Chaining atomic skills through a motion planner, so unseen skill orderings run zero-shot."
+  authors={[
+    {
+      name: "Yue Yang",
+      url: "https://yy-gx.github.io/",
+      institution: "UNC Chapel Hill",
+      notes: ["1", "†"],
+    },
+    {
+      name: "Shuo Cheng",
+      url: "https://sites.google.com/view/shuocheng",
+      institution: "Georgia Tech",
+      notes: ["2"],
+    },
+    {
+      name: "Yu Fang",
+      url: "https://yuffish.github.io/",
+      institution: "UNC Chapel Hill",
+      notes: ["1"],
+    },
+    {
+      name: "Homanga Bharadhwaj",
+      url: "https://homangab.github.io/",
+      institution: "CMU",
+      notes: ["3"],
+    },
+    {
+      name: "Mingyu Ding",
+      url: "https://dingmyu.github.io/",
+      institution: "UNC Chapel Hill",
+      notes: ["1"],
+    },
+    {
+      name: "Gedas Bertasius",
+      url: "https://www.gedasbertasius.com/",
+      institution: "UNC Chapel Hill",
+      notes: ["1"],
+    },
+    {
+      name: "Daniel Szafir",
+      url: "https://cs.unc.edu/person/daniel-szafir/",
+      institution: "UNC Chapel Hill",
+      notes: ["1"],
+    },
+  ]}
+  notes={[
+    {
+      symbol: "1",
+      text: "University of North Carolina at Chapel Hill",
+    },
+    { symbol: "2", text: "Georgia Institute of Technology" },
+    { symbol: "3", text: "Carnegie Mellon University" },
+    { symbol: "†", text: "Corresponding author: yygx@cs.unc.edu" },
+  ]}
+  links={[
+    { name: "Paper", url: "static/pdfs/main.pdf", icon: "ri:file-pdf-2-line" },
+    { name: "Supplementary", url: "static/pdfs/appendix.pdf", icon: "ri:file-text-line" },
+    { name: "arXiv", url: "https://arxiv.org/abs/2602.21531", icon: "academicons:arxiv" },
+    { name: "Code", url: "https://github.com/YY-GX/LiLo-VLA", icon: "ri:github-line" },
+    { name: "Checkpoint", url: "https://huggingface.co/yygx/lilo-vla-openvla-oft", icon: "ri:box-3-line" },
+    { name: "Dataset", url: "https://huggingface.co/datasets/yygx/lilo-vla-atomic-skills-rlds", icon: "ri:database-2-line" },
+  ]}
+/>
+
+<Contents
+  items={[
+    { id: "reordering-should-be-free", label: "Problem" },
+    { id: "linking-object-centric-policies", label: "Method" },
+    { id: "a-benchmark-of-21-configurations", label: "Benchmark" },
+    { id: "results-in-simulation", label: "Simulation" },
+    { id: "real-robot-deployment", label: "Real robots" },
+    { id: "run-your-own-policy-on-it", label: "Use it" },
+    { id: "limitations", label: "Limitations" },
+    { id: "bibtex", label: "Cite" },
+  ]}
+/>
+
+<HighlightedSection>
+
+## Abstract
+
+General-purpose robots must master long-horizon manipulation, defined as tasks involving multiple kinematic structure changes (e.g., attaching or detaching objects) in unstructured environments. While Vision-Language-Action (VLA) models offer the potential to master diverse atomic skills, they struggle with the combinatorial complexity of sequencing them and are prone to cascading failures due to environmental sensitivity. To address these challenges, we propose **LiLo-VLA** (**Li**nked **Lo**cal **VLA**), a modular framework capable of zero-shot generalization to novel long-horizon tasks without ever being trained on them. Our approach decouples transport from interaction: a Reaching Module handles global motion, while an Interaction Module employs an object-centric VLA to process isolated objects of interest, ensuring robustness against irrelevant visual features and invariance to spatial configurations. Crucially, this modularity facilitates robust failure recovery through dynamic replanning and skill reuse, effectively mitigating the cascading errors common in end-to-end approaches. We introduce a 21-task simulation benchmark consisting of two challenging suites: LIBERO-Long++ and Ultra-Long. In these simulations, LiLo-VLA achieves a 69% average success rate, outperforming Pi0.5 by 41% and OpenVLA-OFT by 67%. Furthermore, real-world evaluations across 8 long-horizon tasks demonstrate an average success rate of 85%.
+
+</HighlightedSection>
+
+<KeyNumbers
+  stats={[
+    {
+      value: "85% vs 0%",
+      label: "success on reordered skill sequences",
+      sub: "LiLo-VLA vs Pi0.5 · same Suite-1 tasks, only the order changes",
+    },
+    {
+      value: "69% / 86%",
+      label: "overall success rate / average progress",
+      sub: "Pi0.5 28% / 31% · OpenVLA-OFT 2% / 4%",
+    },
+    {
+      value: "16 skills",
+      label: "longest task in the benchmark",
+      sub: "21 configurations over 9 scenarios · prior LIBERO-Long suites run 3–4",
+    },
+    {
+      value: "85%",
+      label: "on a real Franka Panda",
+      sub: "8 configurations, up to 8 skills, trained on atomic skills only",
+    },
+  ]}
+/>
+
+<div class="not-prose my-8">
+  <iframe
+    class="aspect-video h-auto w-full rounded-lg"
+    src="https://www.youtube.com/embed/VmX-Y7ecYWU"
+    title="LiLo-VLA overview video"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>
+
+<p class="not-prose text-muted-foreground mt-3 mb-4 text-center text-sm">Overview — sound on</p>
+
+## Reordering should be free
+
+A long-horizon task is a sequence of atomic skills, and the same skills usually admit many valid orderings. Put the mug away before the bowl or after it; the skills are identical either way. A policy that has learned the skills should not care which order it is asked for.
+
+Monolithic VLA policies care a great deal. Fine-tuned on the original long-horizon demonstrations of six LIBERO-Long++ tasks, Pi0.5 solves 83% of them. Ask for the *same* tasks with the skills in a different order and it solves none of them.
+
+<ResultsTable
+  rowHeader="Method"
+  columns={["Original order", "Reordered", "Change"]}
+  rows={[
+    {
+      label: "Pi<sub>0.5</sub>",
+      cells: [
+        { value: "83%" },
+        { value: "0%" },
+        { value: "−83 pts", tone: "negative", strong: true },
+      ],
+    },
+    {
+      label: "LiLo-VLA (ours)",
+      highlight: true,
+      cells: [
+        { value: "78%" },
+        { value: "85%", strong: true },
+        { value: "+7 pts", strong: true },
+      ],
+    },
+  ]}
+  caption="Suite 1 (LIBERO-Long++), success rate over 10 trials per configuration. The tasks, the objects and the trial count are identical across the two columns; only the order in which the skills are requested changes. Pi0.5 was LoRA fine-tuned on the original long-horizon demonstrations and prompted zero-shot with the reordered instruction. The evaluation is unseeded, so LiLo-VLA's +7 points is within run-to-run variance and should be read as unchanged, not as a gain."
+/>
+
+The failure has a specific cause rather than a mysterious one: Pi0.5 frequently ignores the re-ordered language instruction and replays the order it was trained on. It has memorised a trajectory, not grounded a command.
+
+LiLo-VLA is never trained on a task-level ordering at all — only on individual atomic skills, each starting from a canonical approach pose that a motion planner is responsible for reaching. No ordering is more in-distribution than another, so the reordered sequences of Suite 1 score no worse than the original ones. Everything below follows from that one decision.
+
+## Linking object-centric policies
+
+Execution is split in two. A **Reaching Module** moves the end-effector from wherever the last skill ended to a per-object approach pose, using a collision-aware motion planner over the scene point cloud (MPLib). An **Interaction Module** then performs the contact-rich part with an object-centric VLA policy. A geometric verifier checks each skill's effect, and a closed-loop wrapper decides what to do when it fails.
+
+<Figure>
+  <Picture slot="figure" src={architecture} alt="LiLo-VLA architecture. Top left: the Reaching Module generates an approach pose relative to the object and plans a collision-free path to it, with initial-state perturbation applied during data generation. Top right: the Interaction Module runs an object-centric VLA on a distractor-masked wrist view. Bottom: the two modules alternate along a skill chain of transport, pick, transport, place, transport, open, with failure-recovery arrows returning to the Reaching Module." priority={true} />
+  <span slot="caption">**Architecture.** The Reaching Module *(top left)* handles global transport by planning a collision-free path to an approach pose defined in the reference object's frame; the pose is perturbed during demonstration generation so the downstream policy tolerates planner and perception error at deployment. The Interaction Module *(top right)* executes the atomic skill from a wrist-view observation in which non-target objects are masked out. The system chains the two *(bottom)*, and a failed skill falls back to the Reaching Module for a reset rather than a blind retry.</span>
+</Figure>
+
+<Video
+  src={`${import.meta.env.BASE_URL}/videos/framework.mp4`}
+  poster={`${import.meta.env.BASE_URL}/videos/framework-poster.jpg`}
+  controls={false}
+/>
+
+<p class="not-prose text-muted-foreground mt-3 mb-4 text-center text-sm">The same architecture, built up one stage at a time</p>
+
+<TwoColumns>
+<div slot="left">
+
+### Reaching: transport, planned not learned
+
+The approach pose is defined in the reference object's frame — a fixed face-down orientation plus a skill-specific offset, such as a vertical clearance for a pick — so it is deterministic and reusable across orderings. MPLib plans a collision-free path to it from the environment point cloud and the robot's kinematic chain, with nothing learned.
+
+Planner convergence and pose estimation are never exact, so demonstrations are *not* generated from the canonical pose. Each episode starts from a perturbed pose sampled around it, and the policy absorbs the residual error. Aggregated over the 27 unique skills in both suites, the perturbation-trained policy shows only a marginal drop under initial-pose noise, while a policy trained on canonical trajectory endpoints degrades sharply.
+
+</div>
+<div slot="right">
+
+### Interaction: one object, one wrist view
+
+The interaction policy sees the wrist camera only. Fixed third-person views are deliberately excluded: as the global layout and the end-effector position change from skill to skill, a static camera sees inconsistent features — the observation-space shift that long-horizon execution suffers from — while the wrist view keeps the target in frame and most distractors out of it.
+
+Non-target objects are then masked with black rectangles derived from their segmentation masks. Because that masking is itself a large visual shift, training applies random erasing to background pixels only, so the masked observation at deployment stays inside the distribution the policy learned.
+
+</div>
+</TwoColumns>
+
+### Recovery, not retry
+
+Each skill ends with a geometric verifier: LIBERO's own contact, position and height conditions for a place, displacement or rotation for an articulation, and an added predicate for a pick, which succeeds when the target rises by at least 3 cm.
+
+When a skill fails, what happens next depends on whether the gripper is holding something. A failed **pick** or **articulation** is retried locally — the object pose is re-estimated and the Reaching Module returns the end-effector to the approach pose first, so the retry starts from a state the policy trained on. A failed **place** means the held object's location is uncertain, so execution backtracks to the most recent pick and re-acquires it. Every skill position keeps its own retry counter that no other skill's success resets, with a budget of K = 10, which bounds the whole episode at O(NK) failures.
+
+<details class="border-border bg-muted/50 my-8 rounded-xl border px-5 py-4">
+<summary class="cursor-pointer font-medium">Setup, backbones and what is assumed</summary>
+
+- **Backbone (simulation).** OpenVLA-OFT with its original hyperparameters, fed the wrist view only, with random erasing on background pixels. Training data is LIBERO-90 demonstrations segmented into atomic skills and augmented through MPLib: perturbed initial states are sampled around the approach pose and planned back onto the original demonstrations, which bridges the planner-policy gap.
+- **Backbone (hardware).** Pi0.5, trained on teleoperated atomic-skill demonstrations only. The framework is not bound to one architecture.
+- **Baselines.** Pi0.5 and OpenVLA-OFT. On Suite 1 original sequences both are LoRA fine-tuned on the original continuous long-horizon demonstrations, and on variant sequences they are prompted zero-shot with the reordered instruction. On Suite 2, collecting continuous demonstrations for every permutation is combinatorially intractable, so both are trained on the aggregate atomic-skill dataset and chained at inference by prompting one sub-task description at a time.
+- **What is assumed in simulation.** Simulator ground-truth poses and segmentation masks, so a reported failure traces to the policy or the planner rather than to upstream perception. Neither baseline receives those poses; the `w/o Reaching` ablation below does.
+- **What is assumed on hardware.** YOLOE for detection and segmentation, FoundationPose for 6D pose. Because occlusion prevents reliable automatic verification on hardware, a human operator judges whether each skill succeeded.
+- **The skill sequence is given.** An external symbolic or LLM/VLM planner supplies it; this work is about executing it.
+
+</details>
+
+## A benchmark of 21 configurations
+
+The LIBERO-Long tasks this builds on stop at three or four skills. The benchmark here keeps that regime and adds one an order of magnitude longer, and every scenario ships with permuted skill orderings — those permutations are what no policy is trained on.
+
+<Figure>
+  <Picture slot="figure" src={benchmark} alt="Left, Suite 1 LIBERO-Long++: two renders of the same LIBERO scene, one with a clean background and one with extra mugs and cans boxed in red, beside a four-chip skill chain shown in its original order and in a permuted order. Right, Suite 2 Ultra-Long: a kitchen scene with baskets, cans and a cabinet, beside three rows of coloured skill chips labelled Original Sequence, Variant 1 and Variant 2 over a per-object colour key." />
+  <span slot="caption">**The two suites.** **Suite 1 — LIBERO-Long++** takes 6 LIBERO-Long tasks that admit reordering and adds randomized distractors (boxed in red), so the policy has to ignore objects that belong to other skills. **Suite 2 — Ultra-Long** adds 3 tasks of 9, 10 and 16 skills, where object and receptacle density pushes a fixed-base tabletop arm to its kinematic reachability limits. Both suites include variant configurations with permuted skill orders.</span>
+</Figure>
+
+<ResultsTable
+  rowHeader="Suite"
+  columns={["Scenarios", "Orderings each", "Configurations", "Skills per task"]}
+  rows={[
+    {
+      label: "LIBERO-Long++",
+      cells: [{ value: "6" }, { value: "2" }, { value: "12" }, { value: "3–4" }],
+    },
+    {
+      label: "Ultra-Long",
+      cells: [{ value: "3" }, { value: "3" }, { value: "9" }, { value: "9–16" }],
+    },
+    {
+      label: "Total",
+      highlight: true,
+      cells: [
+        { value: "9", strong: true },
+        { value: "—" },
+        { value: "21", strong: true },
+        { value: "—" },
+      ],
+    },
+  ]}
+  caption="LIBERO-Long++ tests visual robustness to clutter; Ultra-Long tests temporal scalability. Every configuration is a skill ordering no policy is trained on, so all 21 are executed zero-shot."
+/>
+
+<TwoColumns>
+<div slot="left">
+
+### The three Ultra-Long tasks
+
+- **Kitchen Organization** — 9 skills. Dense receptacles: three baskets and a cabinet in one workspace.
+- **Cooking Preparation** — 10 skills. Geometrically awkward objects, the Moka Pot above all, which is where picks go wrong.
+- **Living Room Organization** — 16 skills. The longest chain in the benchmark, and the one where reachability, not perception, is the binding constraint.
+
+</div>
+<div slot="right">
+
+### Evaluation protocol
+
+- 10 trials per configuration.
+- **SR** counts an episode only if every skill in the sequence executes **in the required order**.
+- **AP** (average progress) counts the uninterrupted prefix of correct skills and stops at the first out-of-order or failed one.
+- Overall macro-averages the **9 scenarios**, not the 21 configurations.
+
+</div>
+</TwoColumns>
+
+## Results in simulation
+
+<ResultsTable
+  groups={[
+    { label: "Suite 1 · LIBERO-Long++", span: 3 },
+    { label: "Suite 2 · Ultra-Long", span: 4 },
+    { label: "", span: 1 },
+  ]}
+  columns={["Original", "Reordered", "Avg.", "Original", "Reorder 1", "Reorder 2", "Avg.", "Overall"]}
+  rows={[
+    {
+      label: "Baseline &middot; Pi<sub>0.5</sub>",
+      cells: [
+        { value: "83%", sub: "AP 93%", strong: true },
+        { value: "0%", sub: "AP 0%" },
+        { value: "42%", sub: "AP 46%" },
+        { value: "0%", sub: "AP 1%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0.3%" },
+        { value: "28%", sub: "AP 31%" },
+      ],
+    },
+    {
+      label: "Baseline &middot; OpenVLA-OFT",
+      cells: [
+        { value: "7%", sub: "AP 11%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "3%", sub: "AP 5%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "2%", sub: "AP 4%" },
+      ],
+    },
+    {
+      label: "Ablation &middot; w/o Reaching",
+      cells: [
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+        { value: "0%", sub: "AP 0%" },
+      ],
+    },
+    {
+      label: "Ablation &middot; w/o Masking",
+      cells: [
+        { value: "67%", sub: "AP 80%" },
+        { value: "77%", sub: "AP 87%" },
+        { value: "72%", sub: "AP 83%" },
+        { value: "0%", sub: "AP 16%" },
+        { value: "0%", sub: "AP 32%" },
+        { value: "0%", sub: "AP 10%" },
+        { value: "0%", sub: "AP 20%" },
+        { value: "48%", sub: "AP 64%" },
+      ],
+    },
+    {
+      label: "Ablation &middot; w/o Recovery",
+      cells: [
+        { value: "2%", sub: "AP 25%" },
+        { value: "23%", sub: "AP 59%" },
+        { value: "13%", sub: "AP 42%" },
+        { value: "0%", sub: "AP 16%" },
+        { value: "0%", sub: "AP 16%" },
+        { value: "0%", sub: "AP 21%" },
+        { value: "0%", sub: "AP 18%" },
+        { value: "8%", sub: "AP 33%" },
+      ],
+    },
+    {
+      label: "LiLo-VLA (ours)",
+      highlight: true,
+      cells: [
+        { value: "78%", sub: "AP 88%" },
+        { value: "85%", sub: "AP 89%", strong: true, tone: "positive" },
+        { value: "82%", sub: "AP 89%", strong: true },
+        { value: "53%", sub: "AP 79%", strong: true },
+        { value: "37%", sub: "AP 84%", strong: true },
+        { value: "43%", sub: "AP 74%", strong: true },
+        { value: "44%", sub: "AP 79%", strong: true },
+        { value: "69%", sub: "AP 86%", strong: true, tone: "positive" },
+      ],
+    },
+  ]}
+  caption="Success rate (SR) with average progress (AP) underneath, 10 trials per configuration. Overall macro-averages the 9 scenarios, not the 21 configurations. Suite 1 tests robustness to visual clutter, Suite 2 scalability to 16 sequential skills. Bold marks the best SR in a column."
+/>
+
+Two things in that table are worth reading slowly.
+
+**Suite 2 is not solved.** Both baselines score 0% on every Ultra-Long configuration, and LiLo-VLA reaches 44%. The gap is attributable to coupling: as layouts evolve across stages, a policy that owns transport as well as interaction needs intractable amounts of transition data, whereas delegating transport to a planner leaves the interaction policy invariant to those shifts. But 44% means most 9-to-16-skill episodes still end short of the goal.
+
+**Read AP next to SR.** Suite 2 averages 44% SR at **79% AP** — a typical trial completes about four fifths of its sequence. At these horizons SR collapses each trial to a single bit and discards most of the signal; AP is the more informative, and the more stable, number.
+
+### What each module buys
+
+Each ablation removes one component and leaves the rest of the system intact.
+
+<div class="border-border bg-muted/50 my-8 rounded-xl border px-5 py-4">
+
+**Knowing where the object is does not help.** The `w/o Reaching` ablation hands the whole episode to the Interaction Module and is granted **the same ground-truth object poses the full method uses**. It scores **0% on all 21 configurations**. A VLA trained on atomic-skill demonstrations does not learn long-horizon transport from pose knowledge alone, so the motion planner is a structural prerequisite rather than an accelerator — and the oracle poses LiLo-VLA is given in simulation are not what the results rest on.
+
+</div>
+
+**Masking matters on top of viewpoint.** Removing random erasing costs 21 points overall, 69% to 48%, and takes Suite 2 to 0%. Even a wrist camera admits enough of the surrounding scene that object-centricity has to be enforced explicitly.
+
+**Recovery is not just more tries.** A naive-retry control keeps the same budget of K = 10 but re-runs a failed skill from wherever the arm ended up, without re-estimating the object pose, resetting to the approach pose, or backtracking to the last pick:
+
+<ResultsTable
+  rowHeader="Retry policy"
+  columns={["Success rate", "Average progress"]}
+  rows={[
+    { label: "Naive retry (same K = 10)", cells: [{ value: "23%" }, { value: "52%" }] },
+    {
+      label: "LiLo-VLA closed-loop recovery",
+      highlight: true,
+      cells: [
+        { value: "53%", strong: true, tone: "positive" },
+        { value: "79%", strong: true, tone: "positive" },
+      ],
+    },
+  ]}
+  caption="Suite 2 Original, pooled over the three Ultra-Long scenarios, 30 trials. Fisher exact test on SR, p = 0.033. The gain comes from the loop restoring a known state before each attempt, not from the extra attempts."
+/>
+
+Across the three Ultra-Long scenarios recovery triggers on **26.8%** of executed skills and resolves **79.2%** of them, and the yield is bounded by the atomic policy underneath it: Cooking Preparation triggers most often, on 37.5% of skills, and resolves only 46.7%, because some picks on geometrically complex objects never succeed.
+
+**Why wrist-only.** On BOSS-C1, a benchmark that stress-tests policies against observation-space shift:
+
+<ResultsTable
+  rowHeader="Observation"
+  columns={["Relative drop under observation-space shift"]}
+  rows={[
+    { label: "Wrist only (ours)", highlight: true, cells: [{ value: "15.9%", strong: true, tone: "positive" }] },
+    { label: "Wrist + 3rd person", cells: [{ value: "18.8%" }] },
+    { label: "3rd person only", cells: [{ value: "29.8%" }] },
+  ]}
+  caption="Wrist-only also reaches the highest clean success rate of the three configurations, 0.88. Only the relative drops and that clean rate are published, so only those are shown."
+/>
+
+## Real-robot deployment
+
+A Franka Emika Panda with a Robotiq 2F-85 gripper and the dual-camera setup of DROID: a static ZED 2 gives the Reaching Module global context, and a wrist-mounted ZED Mini feeds the Interaction Module. Two things differ from simulation, and both are the point of this section — the backbone is **Pi0.5** rather than OpenVLA-OFT, so the framework does not bind to one architecture, and the training data is **teleoperated atomic skills only**, with no long-horizon sequence data at all.
+
+<ResultsTable
+  rowHeader="Scene"
+  columns={["Standard", "Change Sequence", "Diverse Layout"]}
+  rows={[
+    {
+      label: "Scene A &middot; 4 skills",
+      cells: [
+        { value: "100%", sub: "AP 100%" },
+        { value: "80%", sub: "AP 80%" },
+        { value: "100%", sub: "AP 100%" },
+      ],
+    },
+    {
+      label: "Scene B &middot; 4 skills",
+      cells: [
+        { value: "100%", sub: "AP 100%" },
+        { value: "60%", sub: "AP 90%" },
+        { value: "80%", sub: "AP 95%" },
+      ],
+    },
+    {
+      label: "Scene C &middot; 8 skills",
+      cells: [
+        { value: "100%", sub: "AP 100%" },
+        { value: "60%", sub: "AP 85%" },
+        { value: "—" },
+      ],
+    },
+  ]}
+  caption="5 trials per configuration, 85% success rate averaged over the 8 configurations. Standard runs the canonical configuration; Diverse Layout drastically alters the workspace and introduces unseen distractors; Change Sequence permutes the skill order and is executed zero-shot. Diverse Layout is not run on Scene C. Perception is YOLOE for detection and segmentation and FoundationPose for 6D pose; a human operator judges each skill."
+/>
+
+Every rollout below is real hardware, and each clip carries its own task number and protocol in the frame.
+
+<div class="not-prose full-bleed my-10 px-6">
+  <div class="mx-auto max-w-[var(--media-width)]">
+    <p class="text-muted-foreground m-0 mb-3 text-xs font-medium tracking-[0.12em] uppercase">Scene A · 4 skills</p>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/a1.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/a1.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 1 · Standard — 100% SR</figcaption>
+      </figure>
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/a2.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/a2.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 2 · Change Sequence — 80% SR</figcaption>
+      </figure>
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/a3.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/a3.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 3 · Diverse Layout — 100% SR</figcaption>
+      </figure>
+    </div>
+    <p class="text-muted-foreground m-0 mt-8 mb-3 text-xs font-medium tracking-[0.12em] uppercase">Scene B · 4 skills</p>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/b1.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/b1.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 4 · Standard — 100% SR</figcaption>
+      </figure>
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/b2.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/b2.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 5 · Change Sequence — 60% SR, 90% AP</figcaption>
+      </figure>
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/b3.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/b3.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 6 · Diverse Layout — 80% SR, 95% AP</figcaption>
+      </figure>
+    </div>
+    <p class="text-muted-foreground m-0 mt-8 mb-3 text-xs font-medium tracking-[0.12em] uppercase">Scene C · 8 skills</p>
+    <div class="grid grid-cols-1 gap-4 sm:mx-auto sm:max-w-[33rem] sm:grid-cols-2">
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/c1.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/c1.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 7 · Standard — 100% SR</figcaption>
+      </figure>
+      <figure class="m-0">
+        <video class="aspect-[9/10] w-full rounded-lg bg-black object-cover" src={`${import.meta.env.BASE_URL}/static/videos/c2.mp4`} poster={`${import.meta.env.BASE_URL}/static/videos/posters/c2.jpg`} controls muted loop playsinline preload="none"></video>
+        <figcaption class="text-muted-foreground mt-2 text-center text-sm">Task 8 · Change Sequence — 60% SR, 85% AP</figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+
+The 8-skill Change Sequence on Scene C is the result to weigh: an ordering the system has never executed, on hardware, from a policy that has only ever seen individual skills, finishing 85% of the chain.
+
+## Run your own policy on it
+
+The benchmark ships separately from the method. Evaluating your own policy on the 21 configurations needs neither the LiLo-VLA framework nor a GPU-sized dependency tree.
+
+```bash
+git clone https://github.com/YY-GX/LiLo-VLA.git && cd LiLo-VLA
+pip install -e ".[libero]"          # 9 packages, not 39
+```
+
+```python
+import lilo_vla.benchmark                      # registers the suites AND patches LIBERO
+from libero.libero.benchmark import get_benchmark
+
+bench = get_benchmark("ultra_long")()          # or "libero_long_plus_plus",
+                                               # "ultra_long_all", "libero_long_plus_plus_all"
+for i in range(bench.get_num_tasks()):
+    task = bench.get_task(i)
+    env, obs = bench.make_env(i)               # the published evaluation protocol
+    # ... roll out YOUR policy ...
+    success = env.env._check_success()
+    env.close()
+```
+
+`make_env()` builds the environment exactly as every number on this page was measured, so results are comparable without matching a protocol by hand. Importing `lilo_vla` also applies the LIBERO compatibility patches the benchmark depends on — three of them change *success criteria*, so an unpatched LIBERO does not crash, it silently scores the same rollouts differently. The [checkpoint](https://huggingface.co/yygx/lilo-vla-openvla-oft) and the [atomic-skill dataset](https://huggingface.co/datasets/yygx/lilo-vla-atomic-skills-rlds) are released alongside it.
+
+## Limitations
+
+- **Perception is external.** On hardware, YOLOE and FoundationPose supply the detections and poses the Reaching Module plans with. Transparent and heavily occluded objects are where that breaks, and no amount of recovery compensates for a pose that was never right.
+- **Recovery cannot exceed the atomic policy.** With per-skill success $p_i$ and retry budget $K$, the recovered rate is $1-(1-p_i)^K$, which is 0 for any $K$ when $p_i$ is 0. Cooking Preparation shows it: recovery fires on 37.5% of its skills and resolves only 46.7%, because some picks never succeed. Improving the atomic skill beats enlarging $K$.
+- **The skill sequence is given, not planned.** An external symbolic or LLM/VLM planner supplies it. That is a deliberate scoping choice — it attributes every reported failure to execution rather than planning — but this is not a claim about end-to-end task planning.
+- **Simulation uses oracle poses and masks.** Deliberately, so failures trace to the policy or the planner. The `w/o Reaching` ablation is granted the same oracle and still scores 0%, which is the evidence that the result does not rest on it.
+- **The evaluation is unseeded.** Every trial starts from a bare `env.reset()`, so a single configuration's SR over 10 trials carries a wide interval, and the same configuration has been observed moving by 20 points across runs with no code change. Compare the group averages rather than individual cells, and prefer AP. The release documents this in `docs/REPRODUCTION.md`.
+
+<HighlightedSection>
+
+## Takeaway
+
+- **Problem.** A monolithic VLA memorises the ordering it was trained on: Pi0.5 goes from 83% to 0% when the same six tasks are reordered, and to 0% everywhere once a task runs past a handful of skills.
+- **Method.** Delegate transport to a collision-aware motion planner, confine the learned policy to one masked, object-centric wrist view, and close the loop with a verifier that resets to a known state before retrying.
+- **Benchmark.** 21 configurations over 9 scenarios, including three Ultra-Long tasks of 9, 10 and 16 skills, all with permuted orderings that nothing is trained on.
+- **Result.** 69% SR and 86% AP in simulation against 28% for Pi0.5 and 2% for OpenVLA-OFT, and 85% across 8 real-robot configurations with a different backbone and atomic-skill data only.
+
+</HighlightedSection>
+
+## BibTeX
+
+```text
+@article{yang2026lilo,
+  title={LiLo-VLA: Compositional Long-Horizon Manipulation via Linked Object-Centric Policies},
+  author={Yang, Yue and Cheng, Shuo and Fang, Yu and Bharadhwaj, Homanga and Ding, Mingyu and Bertasius, Gedas and Szafir, Daniel},
+  journal={arXiv preprint arXiv:2602.21531},
+  year={2026}
+}
+```

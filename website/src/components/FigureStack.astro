@@ -1,0 +1,43 @@
+---
+// A wide figure split into two stacked halves. The source figures are ~4.5:1
+// and render only ~170px tall across a text column; halved and stacked they
+// come out around 2:1 and are actually readable.
+interface Props {
+  topLabel?: string;
+  bottomLabel?: string;
+  // Fraction of the container each half occupies, so panels in both halves
+  // render at the same scale when their natural widths differ.
+  topWidth?: string;
+  bottomWidth?: string;
+}
+
+const {
+  topLabel,
+  bottomLabel,
+  topWidth = "100%",
+  bottomWidth = "100%",
+} = Astro.props;
+
+const half =
+  "w-full overflow-x-auto **:my-0 [&_img]:min-w-[26rem] sm:[&_img]:min-w-0";
+const label =
+  "text-muted-foreground mb-1.5 text-center text-xs tracking-[0.12em] uppercase";
+---
+
+<figure class="full-bleed my-12">
+  <div class="mx-auto flex w-full max-w-[calc(var(--maximum-text-width)*0.9)] flex-col items-center gap-7 px-6">
+    <div class="w-full" style={`max-width:${topWidth}`}>
+      {topLabel && <p class={label}>{topLabel}</p>}
+      <div class={half}><slot name="top" /></div>
+    </div>
+    <div class="w-full" style={`max-width:${bottomWidth}`}>
+      {bottomLabel && <p class={label}>{bottomLabel}</p>}
+      <div class={half}><slot name="bottom" /></div>
+    </div>
+  </div>
+  <figcaption
+    class="text-muted-foreground mx-auto mt-5 max-w-[calc(var(--maximum-text-width)*0.9)] px-6 text-left text-[0.9375rem] leading-[1.6]"
+  >
+    <slot name="caption" />
+  </figcaption>
+</figure>

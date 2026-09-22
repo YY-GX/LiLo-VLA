@@ -1,0 +1,40 @@
+---
+import { Picture as AstroPicture } from "astro:assets";
+import { renderPDF } from "../lib/render-pdf";
+
+interface Props {
+  src: ImageMetadata | `${string}.pdf`;
+  alt: string;
+  priority?: boolean;
+  invertInDarkMode?: boolean;
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  priority = false,
+  invertInDarkMode = false,
+  sizes = "(min-width: 53rem) 50rem, 100vw",
+} = Astro.props;
+
+let image: ImageMetadata;
+
+if (typeof src === "string") {
+  image = await renderPDF(src);
+} else {
+  image = src;
+}
+---
+
+<AstroPicture
+  class={`rounded-lg max-h-[calc(100svh-3rem)] max-w-full w-full mx-auto ${invertInDarkMode ? "dark:invert" : ""}`}
+  src={image}
+  alt={alt}
+  layout="constrained"
+  formats={["avif", "webp"]}
+  fallbackFormat="webp"
+  sizes={sizes}
+  priority={priority}
+  fit="contain"
+/>
