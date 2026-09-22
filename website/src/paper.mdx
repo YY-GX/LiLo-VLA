@@ -183,15 +183,19 @@ LiLo-VLA is never trained on a task-level ordering at all — only on individual
 Execution is split in two. A **Reaching Module** moves the end-effector from wherever the last skill ended to a per-object approach pose, using a collision-aware motion planner over the scene point cloud (MPLib). An **Interaction Module** then performs the contact-rich part with an object-centric VLA policy. A geometric verifier checks each skill's effect, and a closed-loop wrapper decides what to do when it fails.
 
 <div class="not-prose full-bleed my-10 px-6">
-  <div class="mx-auto max-w-[min(64rem,100%)]">
-    <video
-      class="w-full rounded-lg"
-      src={`${import.meta.env.BASE_URL}/videos/framework.mp4`}
-      poster={`${import.meta.env.BASE_URL}/videos/framework-poster.jpg`}
-      autoplay
-      loop
-      muted
-      playsinline></video>
+  <div class="mx-auto max-w-[min(calc(var(--media-width)+2rem),100%)]">
+    {/* Animated WebP, not a video: it carries an alpha channel, so the page's
+        own background shows through instead of a white plate. WebM VP9 would be
+        a tenth the size but Safari does not support alpha in WebM. */}
+    <img
+      class="w-full"
+      src={`${import.meta.env.BASE_URL}/videos/framework.webp`}
+      width="1194"
+      height="589"
+      alt="LiLo-VLA architecture, built up one stage at a time. The Reaching Module plans a collision-free path to an approach pose above the target object, with initial-state perturbation applied during data generation. The Interaction Module runs an object-centric VLA on a distractor-masked wrist view. The two alternate along a skill chain of transport, pick, transport, place, transport, open, and a failed skill falls back to the Reaching Module."
+      loading="lazy"
+      decoding="async"
+    />
     <p class="text-muted-foreground mt-3 text-center text-sm">**Architecture.** The Reaching Module plans a collision-free path to an approach pose defined in the reference object's frame; the pose is perturbed during demonstration generation so the downstream policy tolerates planner and perception error. The Interaction Module then executes the atomic skill from a wrist view with non-target objects masked out. A failed skill falls back to the Reaching Module for a reset rather than a blind retry.</p>
   </div>
 </div>
