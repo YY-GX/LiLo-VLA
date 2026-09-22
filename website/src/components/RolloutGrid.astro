@@ -33,10 +33,9 @@ const prefix = base.endsWith("/") ? base : base + "/";
             {group.label}
           </p>
           <div
-            class:list={[
-              "grid grid-cols-1 gap-4",
-              group.clips.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2",
-            ]}
+            {/* Always three columns, so a two-clip group keeps the same cell
+                width as the others instead of stretching to fill the row. */}
+            class="grid grid-cols-1 gap-4 sm:grid-cols-3"
           >
             {group.clips.map((clip) => (
               <figure class="group relative m-0 overflow-hidden rounded-xl">
