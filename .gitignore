@@ -1,0 +1,31 @@
+# Runtime outputs (videos, images, pointclouds, eval result JSONs).
+# Created lazily by the pipeline; nothing here is part of the release.
+/outputs/
+
+# Generated on first `import lilo_vla`; holds absolute, machine-local paths.
+configs/libero/config.yaml
+
+# Scratch written by the research LIBERO fork when it is on PYTHONPATH
+# (docs/KNOWN_ISSUES.md E-10). Upstream LIBERO never creates this; if it
+# appears, the wrong LIBERO is in use.
+.boss/
+
+# Datasets and checkpoints are distributed separately and never live in the tree.
+/datasets/
+/runs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+/build/
+/dist/
+.eggs/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Concurrency artefact of the docs build
+docs/.known_issues.lock

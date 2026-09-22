@@ -1,0 +1,40 @@
+(define (problem LIBERO_Living_Room_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick tomato sauce)
+    (:regions
+      (tomato_sauce_init_region
+          (:target living_room_table)
+          (:ranges (
+          (0.07500000000000001 -0.225 0.125 -0.17500000000000002)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    living_room_table - living_room_table
+  )
+
+  (:objects
+    tomato_sauce_1 - tomato_sauce
+  )
+
+  (:obj_of_interest
+    tomato_sauce_1
+  )
+
+  (:init
+    (On tomato_sauce_1 living_room_table_tomato_sauce_init_region)
+  )
+
+  (:goal
+    (And (PickedUp tomato_sauce_1))
+  )
+
+)
+
+

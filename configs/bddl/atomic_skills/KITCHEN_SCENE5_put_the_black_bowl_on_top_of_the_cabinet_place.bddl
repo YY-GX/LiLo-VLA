@@ -1,0 +1,63 @@
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language place black bowl on top of the cabinet)
+    (:regions
+      (wooden_cabinet_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (-0.0000000001 0.29999999999 0.0 0.30)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (akita_black_bowl_init_region
+          (:target kitchen_table)
+          (:ranges (
+          (0.0049999999999999975 -0.07500000000000001 0.055 -0.025)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+      (top_side
+          (:target wooden_cabinet_1)
+          )
+      (top_region
+          (:target wooden_cabinet_1)
+          )
+      (middle_region
+          (:target wooden_cabinet_1)
+          )
+      (bottom_region
+          (:target wooden_cabinet_1)
+          )
+    )
+
+  (:fixtures
+    kitchen_table - kitchen_table
+    wooden_cabinet_1 - wooden_cabinet
+  )
+
+  (:objects
+    akita_black_bowl_1 - akita_black_bowl
+  )
+
+  (:obj_of_interest
+    akita_black_bowl_1
+  )
+
+  (:init
+    (On akita_black_bowl_1 kitchen_table_akita_black_bowl_init_region)
+    (On wooden_cabinet_1 kitchen_table_wooden_cabinet_init_region)
+  )
+
+  (:goal
+    (And (On akita_black_bowl_1 wooden_cabinet_1_top_side))
+  )
+
+)

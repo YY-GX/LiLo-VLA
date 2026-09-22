@@ -1,0 +1,38 @@
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick white bowl)
+    (:regions
+      (white_bowl_init_region
+          (:target kitchen_table)
+          (:ranges (
+          (-0.175 0.07500000000000001 -0.125 0.125)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    kitchen_table - kitchen_table
+  )
+
+  (:objects
+    white_bowl_1 - white_bowl
+  )
+
+  (:obj_of_interest
+    white_bowl_1
+  )
+
+  (:init
+    (On white_bowl_1 kitchen_table_white_bowl_init_region)
+  )
+
+  (:goal
+    (And (PickedUp white_bowl_1))
+  )
+
+)

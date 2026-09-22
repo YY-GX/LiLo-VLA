@@ -1,0 +1,64 @@
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language place wine bottle in bottom drawer of the cabinet)
+    (:regions
+      (wooden_cabinet_init_region
+          (:target kitchen_table)
+          (:ranges (
+              (-0.0000000001 0.29999999999 0.0 0.30)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (wine_bottle_init_region
+          (:target kitchen_table)
+          (:ranges (
+          (-0.175 0.025 -0.125 0.07500000000000001)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+      (top_side
+          (:target wooden_cabinet_1)
+          )
+      (top_region
+          (:target wooden_cabinet_1)
+          )
+      (middle_region
+          (:target wooden_cabinet_1)
+          )
+      (bottom_region
+          (:target wooden_cabinet_1)
+          )
+    )
+
+  (:fixtures
+    kitchen_table - kitchen_table
+    wooden_cabinet_1 - wooden_cabinet
+  )
+
+  (:objects
+    wine_bottle_1 - wine_bottle
+  )
+
+  (:obj_of_interest
+    wine_bottle_1
+  )
+
+  (:init
+    (On wine_bottle_1 kitchen_table_wine_bottle_init_region)
+    (On wooden_cabinet_1 kitchen_table_wooden_cabinet_init_region)
+    (Open wooden_cabinet_1_bottom_region)
+  )
+
+  (:goal
+    (And (In wine_bottle_1 wooden_cabinet_1_bottom_region))
+  )
+
+)

@@ -1,0 +1,60 @@
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language place frying pan on top of the cabinet)
+    (:regions
+      (frypan_init_region
+          (:target kitchen_table)
+          (:ranges (
+          (0.025 -0.025 0.07500000000000001 0.025)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+      (wooden_two_layer_shelf_init_region
+          (:target kitchen_table)
+          (:ranges (
+          (-0.0000000001 0.29999999999 0.0 0.30)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+      (top_side
+          (:target wooden_two_layer_shelf_1)
+      )
+      (top_region
+          (:target wooden_two_layer_shelf_1)
+      )
+      (bottom_region
+          (:target wooden_two_layer_shelf_1)
+      )
+    )
+
+  (:fixtures
+    kitchen_table - kitchen_table
+    wooden_two_layer_shelf_1 - wooden_two_layer_shelf
+  )
+
+  (:objects
+    chefmate_8_frypan_1 - chefmate_8_frypan
+  )
+
+  (:obj_of_interest
+    chefmate_8_frypan_1
+  )
+
+  (:init
+    (On chefmate_8_frypan_1 kitchen_table_frypan_init_region)
+    (On wooden_two_layer_shelf_1 kitchen_table_wooden_two_layer_shelf_init_region)
+  )
+
+  (:goal
+    (And (On chefmate_8_frypan_1 wooden_two_layer_shelf_1_top_side))
+  )
+
+)

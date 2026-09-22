@@ -1,0 +1,38 @@
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick black bowl)
+    (:regions
+      (akita_black_bowl_back_init_region
+          (:target kitchen_table)
+          (:ranges (
+          (-0.175 0.025 -0.125 0.07500000000000001)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    kitchen_table - kitchen_table
+  )
+
+  (:objects
+    akita_black_bowl_3 - akita_black_bowl
+  )
+
+  (:obj_of_interest
+    akita_black_bowl_3
+  )
+
+  (:init
+    (On akita_black_bowl_3 kitchen_table_akita_black_bowl_back_init_region)
+  )
+
+  (:goal
+    (And (PickedUp akita_black_bowl_3))
+  )
+
+)

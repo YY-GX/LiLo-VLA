@@ -1,0 +1,567 @@
+{
+  "close_the_bottom_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_bottom"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE4_close_the_bottom_drawer_of_the_cabinet.bddl"
+    ],
+    "skill_type": "other"
+  },
+  "close_the_microwave": {
+    "target_object": [
+      "microwave_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE6_close_the_microwave.bddl"
+    ],
+    "skill_type": "other"
+  },
+  "close_the_top_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_top"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+      "KITCHEN_SCENE5_close_the_top_drawer_of_the_cabinet.bddl"
+    ],
+    "skill_type": "other"
+  },
+  "open_the_bottom_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_bottom"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl"
+    ],
+    "skill_type": "other"
+  },
+  "open_the_microwave": {
+    "target_object": [
+      "microwave_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE7_open_the_microwave.bddl"
+    ],
+    "skill_type": "other"
+  },
+  "open_the_top_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_top"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet.bddl",
+      "KITCHEN_SCENE2_open_the_top_drawer_of_the_cabinet.bddl"
+    ],
+    "skill_type": "other"
+  },
+  "pick_alphabet_soup": {
+    "target_object": [
+      "alphabet_soup_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE1_pick_up_the_alphabet_soup_and_put_it_in_the_basket_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_black_bowl": {
+    "target_object": [
+      "akita_black_bowl_1_main",
+      "akita_black_bowl_2_main",
+      "akita_black_bowl_3_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE1_put_the_black_bowl_on_the_plate_pick.bddl",
+      "KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet_pick.bddl",      
+      "KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet_pick.bddl",
+      "KITCHEN_SCENE2_put_the_black_bowl_at_the_back_on_the_plate_pick.bddl",
+      "KITCHEN_SCENE2_put_the_black_bowl_at_the_front_on_the_plate_pick.bddl",
+      "KITCHEN_SCENE2_put_the_middle_black_bowl_on_the_plate_pick.bddl",
+      "KITCHEN_SCENE2_put_the_middle_black_bowl_on_top_of_the_cabinet_pick.bddl",
+      "KITCHEN_SCENE2_stack_the_black_bowl_at_the_front_on_the_black_bowl_in_the_middle_pick.bddl",
+      "KITCHEN_SCENE2_stack_the_middle_black_bowl_on_the_back_black_bowl_pick.bddl",
+      "KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_pick.bddl",
+      "KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet_pick.bddl",
+      "KITCHEN_SCENE5_put_the_black_bowl_in_the_top_drawer_of_the_cabinet_pick.bddl",
+      "KITCHEN_SCENE5_put_the_black_bowl_on_the_plate_pick.bddl",
+      "KITCHEN_SCENE5_put_the_black_bowl_on_top_of_the_cabinet_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_black_book": {
+    "target_object": [
+      "black_book_1_main"
+    ],
+    "bddl_files": [
+      "STUDY_SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_butter": {
+    "target_object": [
+      "butter_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE2_pick_up_the_butter_and_put_it_in_the_basket_pick.bddl",
+      "LIVING_ROOM_SCENE3_pick_up_the_butter_and_put_it_in_the_tray_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_chocolate_pudding": {
+    "target_object": [
+      "chocolate_pudding_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE6_put_the_chocolate_pudding_to_the_left_of_the_plate_pick.bddl",
+      "LIVING_ROOM_SCENE6_put_the_chocolate_pudding_to_the_right_of_the_plate_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_cream_cheese": {
+    "target_object": [
+      "cream_cheese_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE1_pick_up_the_cream_cheese_box_and_put_it_in_the_basket_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_frying_pan": {
+    "target_object": [
+      "chefmate_8_frypan_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE3_put_the_frying_pan_on_the_stove_pick.bddl",
+      "KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf_pick.bddl",
+      "KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet_pick.bddl",
+      "KITCHEN_SCENE9_put_the_frying_pan_under_the_cabinet_shelf_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_ketchup": {
+    "target_object": [
+      "ketchup_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE5_put_the_ketchup_in_the_top_drawer_of_the_cabinet_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_moka_pot": {
+    "target_object": [
+      "moka_pot_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE3_put_the_moka_pot_on_the_stove_pick.bddl",
+      "KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_red_mug": {
+    "target_object": [
+      "red_coffee_mug_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE5_put_the_red_mug_on_the_left_plate_pick.bddl",
+      "LIVING_ROOM_SCENE5_put_the_red_mug_on_the_right_plate_pick.bddl",
+      "LIVING_ROOM_SCENE6_put_the_red_mug_on_the_plate_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_tomato_sauce": {
+    "target_object": [
+      "tomato_sauce_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE1_pick_up_the_tomato_sauce_and_put_it_in_the_basket_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_white_bowl": {
+    "target_object": [
+      "white_bowl_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE7_put_the_white_bowl_on_the_plate_pick.bddl",
+      "KITCHEN_SCENE7_put_the_white_bowl_to_the_right_of_the_plate_pick.bddl",
+      "KITCHEN_SCENE9_put_the_white_bowl_on_top_of_the_cabinet_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_white_mug": {
+    "target_object": [
+      "porcelain_mug_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_pick.bddl",
+      "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_wine_bottle": {
+    "target_object": [
+      "wine_bottle_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE4_put_the_wine_bottle_in_the_bottom_drawer_of_the_cabinet_pick.bddl",
+      "KITCHEN_SCENE4_put_the_wine_bottle_on_the_wine_rack_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "pick_yellow_and_white_mug": {
+    "target_object": [
+      "white_yellow_mug_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE5_put_the_yellow_and_white_mug_on_the_right_plate_pick.bddl"
+    ],
+    "skill_type": "pick"
+  },
+  "place_alphabet_soup_in_basket": {
+    "target_object": [
+      "basket_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE1_pick_up_the_alphabet_soup_and_put_it_in_the_basket_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "alphabet_soup_1_main"
+    ]
+  },
+  "place_black_bowl_in_bottom_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_bottom"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "akita_black_bowl_1_main",
+      "akita_black_bowl_2_main",
+      "akita_black_bowl_3_main"
+    ]
+  },
+  "place_black_bowl_in_top_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_top"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet_place.bddl",
+      "KITCHEN_SCENE5_put_the_black_bowl_in_the_top_drawer_of_the_cabinet_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "akita_black_bowl_1_main",
+      "akita_black_bowl_2_main",
+      "akita_black_bowl_3_main"
+    ]
+  },
+  "place_black_bowl_on_the_black_bowl": {
+    "target_object": [
+      "akita_black_bowl_2_main",
+      "akita_black_bowl_3_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE2_stack_the_black_bowl_at_the_front_on_the_black_bowl_in_the_middle_place.bddl",
+      "KITCHEN_SCENE2_stack_the_middle_black_bowl_on_the_back_black_bowl_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "akita_black_bowl_1_main",
+      "akita_black_bowl_2_main",
+      "akita_black_bowl_3_main"
+    ]
+  },
+  "place_black_bowl_on_the_plate": {
+    "target_object": [
+      "plate_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE1_put_the_black_bowl_on_the_plate_place.bddl",
+      "KITCHEN_SCENE2_put_the_black_bowl_at_the_back_on_the_plate_place.bddl",
+      "KITCHEN_SCENE2_put_the_black_bowl_at_the_front_on_the_plate_place.bddl",
+      "KITCHEN_SCENE2_put_the_middle_black_bowl_on_the_plate_place.bddl",
+      "KITCHEN_SCENE5_put_the_black_bowl_on_the_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "akita_black_bowl_1_main",
+      "akita_black_bowl_2_main",
+      "akita_black_bowl_3_main"
+    ]
+  },
+  "place_black_bowl_on_top_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_top"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet_place.bddl",
+      "KITCHEN_SCENE2_put_the_middle_black_bowl_on_top_of_the_cabinet_place.bddl",
+      "KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet_place.bddl",
+      "KITCHEN_SCENE5_put_the_black_bowl_on_top_of_the_cabinet_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "akita_black_bowl_1_main",
+      "akita_black_bowl_2_main",
+      "akita_black_bowl_3_main"
+    ]
+  },
+  "place_black_book_in_back_compartment_of_caddy": {
+    "target_object": [
+      "desk_caddy_1_main"
+    ],
+    "bddl_files": [
+      "STUDY_SCENE2_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "black_book_1_main"
+    ]
+  },
+  "place_butter_in_basket": {
+    "target_object": [
+      "basket_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE2_pick_up_the_butter_and_put_it_in_the_basket_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "butter_1_main"
+    ]
+  },
+  "place_butter_in_tray": {
+    "target_object": [
+      "wooden_tray_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE3_pick_up_the_butter_and_put_it_in_the_tray_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "butter_1_main"
+    ]
+  },
+  "place_chocolate_pudding_to_left_of_plate": {
+    "target_object": [
+      "plate_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE6_put_the_chocolate_pudding_to_the_left_of_the_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "chocolate_pudding_1_main"
+    ]
+  },
+  "place_chocolate_pudding_to_right_of_plate": {
+    "target_object": [
+      "plate_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE6_put_the_chocolate_pudding_to_the_right_of_the_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "chocolate_pudding_1_main"
+    ]
+  },
+  "place_cream_cheese_in_basket": {
+    "target_object": [
+      "basket_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE1_pick_up_the_cream_cheese_box_and_put_it_in_the_basket_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "cream_cheese_1_main"
+    ]
+  },
+  "place_frying_pan_on_the_stove": {
+    "target_object": [
+      "flat_stove_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE3_put_the_frying_pan_on_the_stove_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "chefmate_8_frypan_1_main"
+    ]
+  },
+  "place_frying_pan_under_the_cabinet_shelf": {
+    "target_object": [
+      "wooden_two_layer_shelf_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf_place.bddl",
+      "KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet_place.bddl",
+      "KITCHEN_SCENE9_put_the_frying_pan_under_the_cabinet_shelf_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "chefmate_8_frypan_1_main"
+    ]
+  },
+  "place_ketchup_in_top_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_top"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE5_put_the_ketchup_in_the_top_drawer_of_the_cabinet_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "ketchup_1_main"
+    ]
+  },
+  "place_moka_pot_on_the_stove": {
+    "target_object": [
+      "flat_stove_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE3_put_the_moka_pot_on_the_stove_place.bddl",
+      "KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "moka_pot_1_main"
+    ]
+  },
+  "place_red_mug_on_the_plate": {
+    "target_object": [
+      "plate_1_main",
+      "plate_2_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE5_put_the_red_mug_on_the_left_plate_place.bddl",
+      "LIVING_ROOM_SCENE5_put_the_red_mug_on_the_right_plate_place.bddl",
+      "LIVING_ROOM_SCENE6_put_the_red_mug_on_the_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "red_coffee_mug_1_main"
+    ]
+  },
+  "place_tomato_sauce_in_basket": {
+    "target_object": [
+      "basket_1_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE1_pick_up_the_tomato_sauce_and_put_it_in_the_basket_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "tomato_sauce_1_main"
+    ]
+  },
+  "place_white_bowl_on_the_plate": {
+    "target_object": [
+      "plate_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE7_put_the_white_bowl_on_the_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "white_bowl_1_main"
+    ]
+  },
+  "place_white_bowl_to_right_of_plate": {
+    "target_object": [
+      "plate_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE7_put_the_white_bowl_to_the_right_of_the_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "white_bowl_1_main"
+    ]
+  },
+  "place_white_bowl_on_top_of_the_cabinet": {
+    "target_object": [
+      "wooden_two_layer_shelf_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE9_put_the_white_bowl_on_top_of_the_cabinet_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "white_bowl_1_main"
+    ]
+  },
+  "place_white_mug_on_the_plate": {
+    "target_object": [
+      "plate_1_main",
+      "plate_2_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_place.bddl",
+      "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "porcelain_mug_1_main"
+    ]
+  },
+  "place_wine_bottle_in_bottom_drawer_of_the_cabinet": {
+    "target_object": [
+      "wooden_cabinet_1_cabinet_bottom"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE4_put_the_wine_bottle_in_the_bottom_drawer_of_the_cabinet_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "wine_bottle_1_main"
+    ]
+  },
+  "place_wine_bottle_on_the_wine_rack": {
+    "target_object": [
+      "wine_rack_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE4_put_the_wine_bottle_on_the_wine_rack_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "wine_bottle_1_main"
+    ]
+  },
+  "place_yellow_and_white_mug_on_right_plate": {
+    "target_object": [
+      "plate_2_main"
+    ],
+    "bddl_files": [
+      "LIVING_ROOM_SCENE5_put_the_yellow_and_white_mug_on_the_right_plate_place.bddl"
+    ],
+    "skill_type": "place",
+    "grasped_object_name": [
+      "white_yellow_mug_1_main"
+    ]
+  },
+  "turn_off_the_stove": {
+    "target_object": [
+      "flat_stove_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE8_turn_off_the_stove.bddl"
+    ],
+    "skill_type": "other"
+  },
+  "turn_on_the_stove": {
+    "target_object": [
+      "flat_stove_1_main"
+    ],
+    "bddl_files": [
+      "KITCHEN_SCENE3_turn_on_the_stove.bddl",
+      "KITCHEN_SCENE9_turn_on_the_stove.bddl"
+    ],
+    "skill_type": "other"
+  }
+}

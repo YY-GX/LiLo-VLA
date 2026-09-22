@@ -1,0 +1,39 @@
+(define (problem LIBERO_Living_Room_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick butter)
+    (:regions
+      (butter_init_region
+          (:target living_room_table)
+          (:ranges (
+          (0.025 0.025 0.07500000000000001 0.07500000000000001)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    living_room_table - living_room_table
+  )
+
+  (:objects
+    butter_1 - butter
+  )
+
+  (:obj_of_interest
+    butter_1
+  )
+
+  (:init
+    (On butter_1 living_room_table_butter_init_region)
+  )
+
+  (:goal
+    (And (PickedUp butter_1))
+  )
+
+)
+

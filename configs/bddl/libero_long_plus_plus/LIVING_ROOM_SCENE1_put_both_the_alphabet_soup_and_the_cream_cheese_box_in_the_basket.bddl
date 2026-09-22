@@ -1,0 +1,120 @@
+(define (problem LIBERO_Living_Room_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language put both the alphabet soup and the cream cheese box in the basket)
+    (:regions
+      (basket_init_region
+          (:target living_room_table)
+          (:ranges (
+              (-0.01 0.25 0.01 0.27)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (alphabet_soup_1_init_region
+          (:target living_room_table)
+          (:ranges (
+              (0.025 -0.125 0.07500000000000001 -0.07500000000000001)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (cream_cheese_init_region
+          (:target living_room_table)
+          (:ranges (
+              (-0.175 0.034999999999999996 -0.125 0.08499999999999999)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (alphabet_soup_2_init_region
+          (:target living_room_table)
+          (:ranges (
+              (0.125000000000001 -0.225 0.15 -0.17500000000000002)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (ketchup_init_region
+          (:target living_room_table)
+          (:ranges (
+              (-0.225 -0.175 -0.17500000000000002 -0.125)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (moka_pot_init_region
+          (:target living_room_table)
+          (:ranges (
+              (-0.1 -0.3 -0.05 -0.25)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (porcelain_mug_init_region
+          (:target living_room_table)
+          (:ranges (
+              (0.225 -0.1 0.25 0.0)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (contain_region
+          (:target basket_1)
+      )
+    )
+
+  (:fixtures
+    living_room_table - living_room_table
+  )
+
+  (:objects
+    porcelain_mug_1 - porcelain_mug
+    alphabet_soup_1 alphabet_soup_2 - alphabet_soup
+    cream_cheese_1 - cream_cheese
+    ketchup_1 - ketchup
+    basket_1 - basket
+    moka_pot_1 - moka_pot
+  )
+
+  (:obj_of_interest
+    alphabet_soup_1
+    cream_cheese_1
+    basket_1
+  )
+
+  (:init
+    (On alphabet_soup_1 living_room_table_alphabet_soup_1_init_region)
+    (On alphabet_soup_2 living_room_table_alphabet_soup_2_init_region)
+    (On cream_cheese_1 living_room_table_cream_cheese_init_region)
+    (On ketchup_1 living_room_table_ketchup_init_region)
+    (On basket_1 living_room_table_basket_init_region)
+    (On moka_pot_1 living_room_table_moka_pot_init_region)
+    (On porcelain_mug_1 living_room_table_porcelain_mug_init_region)
+  )
+
+  (:goal
+    (And (In alphabet_soup_1 basket_1_contain_region) (In cream_cheese_1 basket_1_contain_region))
+  )
+
+)

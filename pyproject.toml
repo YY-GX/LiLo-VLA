@@ -1,0 +1,132 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lilo-vla"
+description = "LiLo-VLA: Compositional Long-Horizon Manipulation via Linked Object-Centric Policies"
+version = "0.1.0"
+readme = "README.md"
+# The released runs were made on python 3.10.16 (wandb freeze, docs/repro/wandb-metadata.json).
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+
+# ---------------------------------------------------------------------------
+# Versions below are the AS-RUN versions of the checkpoint that produced every
+# number in the paper, taken from the training run's own pip freeze
+# (docs/repro/requirements.txt), NOT from any requirements file in the research
+# repo -- those describe an environment that never existed on the machine.
+#
+# NOT listed here, and installed separately (see README "Installation"):
+#   * LIBERO, pinned at upstream commit f78abd6 -- not on PyPI, and the pin is
+#     load-bearing: lilo_vla/libero_compat.py patches exactly that revision.
+#   * torch 2.2.0+cu121 -- `torch==2.2.0` below resolves the PyPI CPU/CUDA-12.1
+#     build; install from the cu121 index to match the as-run wheel.
+#   * flash-attn 2.5.5 -- a locally compiled wheel, needed for TRAINING only.
+# ---------------------------------------------------------------------------
+dependencies = [
+    # --- BENCHMARK CORE ---------------------------------------------------
+    # Everything below is what `import lilo_vla.benchmark` needs, and nothing
+    # more. Someone who only wants to evaluate their OWN policy on the 21 tasks
+    # installs this and stops here.
+    "numpy==1.26.4",
+    "scipy==1.15.3",
+    "pyyaml==6.0.2",
+    # .pruned_init init states are torch tensors (benchmark/__init__.py:261).
+    "torch==2.2.0",
+    # --- simulation. PINNED BECAUSE THEY DEFINE THE SUCCESS CRITERIA and the
+    #     physics, i.e. they change the numbers. Do not float these. ---
+    "robosuite==1.4.1",
+    "mujoco==3.3.0",
+    "bddl==1.0.1",
+    "robomimic==0.2.0",
+    "easydict==1.9",
+]
+
+[project.optional-dependencies]
+# --- LIBERO, required by EVERY use of this package -------------------------
+# Kept out of `dependencies` only because a direct git reference cannot be
+# uploaded to PyPI. The commit pin is load-bearing: lilo_vla/libero_compat.py
+# patches exactly that revision, and those patches are what make a third party's
+# numbers comparable to the paper's.
+#     pip install -e ".[libero]"
+libero = ["libero @ git+https://github.com/Lifelong-Robot-Learning/LIBERO.git@f78abd6"]
+
+# --- THE METHOD -----------------------------------------------------------
+# The LiLo-VLA policy stack: only needed to run our method or reproduce Table 1.
+# A benchmark-only user never installs this.
+#     pip install -e ".[libero,method]"
+method = [
+    # policy stack (OpenVLA-OFT / prismatic)
+    "torchvision==0.17.0",
+    "transformers==4.50.3",        # stock, NOT the fork the old repo pinned
+    "tokenizers==0.21.1",
+    "timm==0.9.10",
+    "peft==0.11.1",
+    "accelerate==1.6.0",
+    "diffusers==0.32.2",
+    "huggingface-hub==0.34.3",
+    "draccus==0.8.0",
+    "pillow",
+    "wandb==0.13.1",
+    # RLDS data stack. Required merely to IMPORT prismatic.vla (see
+    # docs/architecture.md section 6): prismatic/__init__.py pulls the whole
+    # RLDS pipeline in, so running our method needs tensorflow too.
+    "tensorflow==2.18.0",
+    "tensorflow-datasets==4.9.3",
+    "tensorflow-graphics==2021.12.3",
+    "dlimp @ git+https://github.com/moojink/dlimp_openvla@040105d",
+    # reaching / motion planning
+    "mplib==0.2.1",
+    "toppra==0.6.3",
+    "open3d==0.19.0",
+    # I/O, vision, recording
+    "h5py==3.13.0",
+    "opencv-python==4.6.0.66",
+    "imageio==2.37.0",
+    "imageio-ffmpeg==0.6.0",
+    "matplotlib",
+    "pandas==2.3.0",
+    "packaging",
+    "tqdm",
+    "rich",
+    "requests",
+    "jsonlines==4.0.0",
+    "json-numpy==2.1.0",
+]
+
+# Only needed by lilo_vla/reaching/motion_planning/cartesian_planner.py, which is
+# imported but never executed on the published path (--motion_planner_type mplib).
+tracik = ["tracikpy==0.2.0"]
+# Training only. flash-attn has no sdist that builds unattended; install it with
+#   pip install flash-attn==2.5.5 --no-build-isolation
+train = ["flash-attn==2.5.5"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+# `prismatic` MUST stay a top-level package: the released checkpoint's auto_map
+# names `prismatic.extern.hf.*`, and openvla_utils.check_model_logic_mismatch
+# syncs files against <lilo-vla>/prismatic/extern/hf/.
+include = ["lilo_vla*", "prismatic*"]
+
+[tool.setuptools.package-data]
+# The URDF/SRDF and BOTH mesh sets are loaded unconditionally by
+# mplib_core.py:19-20 via a __file__-relative path. Shipping all 20 meshes is
+# deliberate (manifest B13): pruning the .dae visual meshes is untested.
+"lilo_vla.reaching.motion_planning" = [
+    "robot_models/*.urdf",
+    "robot_models/*.srdf",
+    "robot_models/**/*.stl",
+    "robot_models/**/*.dae",
+    # explicit paths too: recursive `**` in package-data needs setuptools>=62.3
+    "robot_models/franka_description/meshes/collision/*.stl",
+    "robot_models/franka_description/meshes/visual/*.dae",
+]
+"prismatic" = ["py.typed"]
+
+# NOTE ON INSTALL MODE -- read before switching to a wheel.
+# `configs/` (tasks_and_skills.json, skill_config.json, the 100 BDDL files, the
+# init states) and `outputs/` live NEXT TO the package, not inside it: every
+# module resolves them as `Path(__file__).resolve().parents[N]` == the source
+# checkout root. A non-editable install puts lilo_vla/ under site-packages and
+# those lookups then miss. Install from a checkout with `pip install -e .`.

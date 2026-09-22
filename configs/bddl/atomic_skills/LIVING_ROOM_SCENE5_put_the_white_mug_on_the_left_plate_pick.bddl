@@ -1,0 +1,38 @@
+(define (problem LIBERO_Living_Room_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick white mug)
+    (:regions
+      (porcelain_mug_init_region
+          (:target living_room_table)
+          (:ranges (
+          (-0.125 -0.175 -0.07500000000000001 -0.125)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    living_room_table - living_room_table
+  )
+
+  (:objects
+    porcelain_mug_1 - porcelain_mug
+  )
+
+  (:obj_of_interest
+    porcelain_mug_1
+  )
+
+  (:init
+    (On porcelain_mug_1 living_room_table_porcelain_mug_init_region)
+  )
+
+  (:goal
+    (And (PickedUp porcelain_mug_1))
+  )
+
+)

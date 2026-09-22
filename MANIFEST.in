@@ -1,0 +1,23 @@
+# The release is installed editable, from a checkout (see pyproject.toml's note on
+# install mode): configs/ and outputs/ are resolved relative to the SOURCE TREE, not
+# to the installed package. These rules make an sdist carry the same tree.
+
+include LICENSE
+include README.md
+include MANIFEST.in
+
+# Task configuration, BDDL files, initial states.
+recursive-include configs *.json *.bddl *.pruned_init *.png *.gitignore
+
+# Robot model loaded by a __file__-relative path at import time.
+recursive-include lilo_vla/reaching/motion_planning/robot_models *.urdf *.srdf *.stl *.dae
+
+include prismatic/py.typed
+
+# Entry points, reproduction docs, the vendored RLDS builder.
+recursive-include scripts *.py *.sh
+recursive-include docs *.md *.txt *.json *.yaml
+recursive-include third_party *.py
+
+global-exclude __pycache__/* *.py[cod]
+prune outputs

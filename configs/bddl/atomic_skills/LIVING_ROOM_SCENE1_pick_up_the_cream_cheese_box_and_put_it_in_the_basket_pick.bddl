@@ -1,0 +1,40 @@
+(define (problem LIBERO_Living_Room_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick cream cheese)
+    (:regions
+      (cream_cheese_init_region
+          (:target living_room_table)
+          (:ranges (
+          (-0.175 0.034999999999999996 -0.125 0.08499999999999999)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    living_room_table - living_room_table
+  )
+
+  (:objects
+    cream_cheese_1 - cream_cheese
+  )
+
+  (:obj_of_interest
+    cream_cheese_1
+  )
+
+  (:init
+    (On cream_cheese_1 living_room_table_cream_cheese_init_region)
+  )
+
+  (:goal
+    (And (PickedUp cream_cheese_1))
+  )
+
+)
+
+

@@ -1,0 +1,38 @@
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick ketchup)
+    (:regions
+      (ketchup_init_region
+          (:target kitchen_table)
+          (:ranges (
+          (-0.125 -0.125 -0.07500000000000001 -0.07500000000000001)
+          )
+          )
+          (:yaw_rotation (
+          (0.0 0.0)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    kitchen_table - kitchen_table
+  )
+
+  (:objects
+    ketchup_1 - ketchup
+  )
+
+  (:obj_of_interest
+    ketchup_1
+  )
+
+  (:init
+    (On ketchup_1 kitchen_table_ketchup_init_region)
+  )
+
+  (:goal
+    (And (PickedUp ketchup_1))
+  )
+
+)

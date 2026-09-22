@@ -1,0 +1,40 @@
+(define (problem LIBERO_Study_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick black book)
+    (:regions
+      (black_book_init_region
+          (:target study_table)
+          (:ranges (
+          (-0.025 -0.07500000000000001 0.025 -0.025)
+          )
+          )
+          (:yaw_rotation (
+          (-1.5707963267948966 -0.7853981633974483)
+          )
+          )
+          )
+    )
+
+  (:fixtures
+    study_table - study_table
+  )
+
+  (:objects
+    black_book_1 - black_book
+  )
+
+  (:obj_of_interest
+    black_book_1
+  )
+
+  (:init
+    (On black_book_1 study_table_black_book_init_region)
+  )
+
+  (:goal
+    (And (PickedUp black_book_1))
+  )
+
+)
+
+
