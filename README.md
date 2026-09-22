@@ -2,6 +2,11 @@
 
 **Compositional Long-Horizon Manipulation via Linked Object-Centric Policies**
 
+[**Project page**](https://yy-gx.github.io/LiLo-VLA/) &nbsp;·&nbsp;
+[**Paper**](https://yy-gx.github.io/LiLo-VLA/static/pdfs/main.pdf) &nbsp;·&nbsp;
+[**Checkpoint**](https://huggingface.co/yygx/lilo-vla-openvla-oft) &nbsp;·&nbsp;
+[**Dataset**](https://huggingface.co/datasets/yygx/lilo-vla-atomic-skills-rlds)
+
 LiLo-VLA executes long-horizon manipulation by *linking* a library of object-centric
 atomic policies. A **reaching module** drives the end-effector to a per-object approach
 pose with a collision-aware motion planner; an **interaction module** hands control to a
@@ -17,10 +22,22 @@ it never saw during training.
 | **Benchmark** | 21 configurations. Ultra-Long (3 tasks × 3 skill orderings, 9–16 skills each) and LIBERO-Long++ (6 tasks × 2 orderings, 3–4 skills each) |
 | **Policy** | OpenVLA-OFT 7B, LoRA r32, L1 regression, 8-step action chunks, wrist image + proprioception |
 | **Simulator** | LIBERO / robosuite / MuJoCo |
+| **Paper** | [PDF](https://yy-gx.github.io/LiLo-VLA/static/pdfs/main.pdf) · [project page](https://yy-gx.github.io/LiLo-VLA/) |
 | **Checkpoint** | [`yygx/lilo-vla-openvla-oft`](https://huggingface.co/yygx/lilo-vla-openvla-oft) |
 | **Training data** | [`yygx/lilo-vla-atomic-skills-rlds`](https://huggingface.co/datasets/yygx/lilo-vla-atomic-skills-rlds) |
 
 ---
+
+## Contents
+
+- [Results](#results) — what the system scores, and how much run-to-run variance to expect
+- [Just want the benchmark?](#just-want-the-benchmark) — evaluate *your* policy on the 21 tasks, 9 dependencies
+- [Installation](#installation) — LIBERO pin, compatibility patches, install extras
+- [Evaluation](#evaluation) — reproduce the numbers, read the result files
+- [Method](#method) — module ↔ paper-section map
+- [Repository layout](#repository-layout)
+- [Data generation and training](#data-generation-and-training)
+- [Citation](#citation) · [License](#license)
 
 ## Results
 
@@ -253,6 +270,25 @@ a different protocol that gives different numbers.
 [docs/architecture.md](docs/architecture.md) maps every module to its paper section.
 
 ---
+
+## Repository layout
+
+```
+lilo_vla/
+  benchmark/        the 21-configuration suites, registered into LIBERO
+  libero_compat.py  the five LIBERO patches the published numbers depend on
+  core/             Algorithm 1 — skill chaining, BDDL verifier, recovery
+  reaching/         approach-pose computation + MPLib motion planning
+  interaction/      object-centric masking, OpenVLA-OFT backend
+  perception/       oracle object-pose reader
+  envs/  utils/     LIBERO env helpers, transforms, config resolution
+  datagen/          object-centric demo generation, HDF5 combine/downsample
+prismatic/          OpenVLA-OFT model code (vendored verbatim, MIT)
+configs/            tasks_and_skills.json, skill_config.json, BDDL files, init states
+scripts/            evaluate_long_horizon.py, train/, data_generation/, analysis/
+third_party/        vendored RLDS dataset builder
+docs/               architecture, reproduction targets, environment freeze
+```
 
 ## Data generation and training
 
