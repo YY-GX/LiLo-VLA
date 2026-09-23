@@ -1,7 +1,5 @@
 ---
 import { Icon } from "astro-icon/components";
-import { Image } from "astro:assets";
-import siteIcon from "../assets/icon.png";
 
 type Author = {
   name: string;
@@ -67,14 +65,7 @@ const hasBackground = Astro.slots.has("background");
     ]}
   >
     <h1 class="my-0 text-4xl leading-tight font-medium tracking-tight text-balance sm:text-5xl">
-      <Image
-        src={siteIcon}
-        alt=""
-        width={180}
-        height={180}
-        densities={[1, 2]}
-        style="display:inline-block;height:1.08em;width:auto;vertical-align:-0.14em;margin:0 0.22em 0 0;max-width:none"
-      />{title}
+      {title}
     </h1>
     {
       subtitle && (
