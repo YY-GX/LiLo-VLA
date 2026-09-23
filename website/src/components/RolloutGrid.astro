@@ -48,17 +48,12 @@ const prefix = base.endsWith("/") ? base : base + "/";
                   playsinline
                   preload="none"
                 />
-                <div class="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-3">
-                  <span class="rounded-md bg-black/55 px-2 py-0.5 text-[0.7rem] font-semibold tracking-wide text-white backdrop-blur-sm">
-                    Task {clip.task}
-                  </span>
-                  <span class="rounded-md bg-black/55 px-2 py-0.5 text-[0.7rem] font-semibold text-white tabular-nums backdrop-blur-sm">
-                    {clip.sr} SR
-                  </span>
-                </div>
-                <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-3 pt-8 text-center text-sm font-medium text-white">
-                  {clip.protocol}
-                </figcaption>
+                {/* The clips already carry their task number (top left) and
+                    protocol (bottom band) burned into the frame, so only the
+                    success rate is overlaid, in the one free corner. */}
+                <span class="pointer-events-none absolute top-3 right-3 rounded-md bg-black/55 px-2 py-0.5 text-[0.7rem] font-semibold text-white tabular-nums backdrop-blur-sm">
+                  {clip.sr} SR
+                </span>
               </figure>
             ))}
           </div>
