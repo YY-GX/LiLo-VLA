@@ -66,8 +66,14 @@ const pdfUrl = new URL(prefix + "static/pdfs/main.pdf", Astro.site).href;
     {description && <meta name="description" content={description} />}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-
     <link rel="icon" href={prefix + "favicon.ico"} sizes="32x32" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href={prefix + "favicon-192.png"}
+    />
+    <link rel="apple-touch-icon" href={prefix + "apple-touch-icon.png"} />
 
     {/* Google Analytics — same property as yy-gx.github.io, EGR and HALTER. */}
     <script
