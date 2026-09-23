@@ -34,8 +34,16 @@ const prefix = base.endsWith("/") ? base : base + "/";
           <p class="text-muted-foreground m-0 mt-8 mb-3 text-xs font-medium tracking-[0.12em] uppercase first:mt-0">
             {group.label}
           </p>
+          {/* Three columns is the reference width. A group with fewer clips keeps
+              that exact cell width -- two cells plus one gap of the 3-column
+              layout -- and is centred instead of hugging the left edge. */}
           <div
-            class="grid grid-cols-1 gap-4 sm:grid-cols-3"
+            class:list={[
+              "grid grid-cols-1 gap-4",
+              group.clips.length >= 3
+                ? "sm:grid-cols-3"
+                : "sm:mx-auto sm:w-[calc((100%-2rem)*2/3+1rem)] sm:grid-cols-2",
+            ]}
           >
             {group.clips.map((clip) => (
               <figure class="group relative m-0 overflow-hidden rounded-xl">
