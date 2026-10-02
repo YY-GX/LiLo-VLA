@@ -24,11 +24,12 @@ interface Props {
   subtitle?: string;
   authors: Author[];
   conference?: string;
+  award?: { text: string; url?: string };
   notes?: Note[];
   links?: Link[];
 }
 
-const { title, subtitle, authors, conference, notes, links } = Astro.props;
+const { title, subtitle, authors, conference, award, notes, links } = Astro.props;
 
 // Same rule as PageNav: a relative link is resolved against the base path, an
 // absolute one is left alone. Keeps `static/pdfs/main.pdf` working wherever the
@@ -72,6 +73,17 @@ const hasBackground = Astro.slots.has("background");
         <p class="text-muted-foreground -mt-1 mb-1 max-w-[38rem] text-xl text-balance">
           {subtitle}
         </p>
+      )
+    }
+    {
+      award && (
+        <a
+          href={award.url ? href(award.url) : undefined}
+          class="not-prose border-primary/30 bg-primary/10 text-primary inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1 text-sm font-medium hover:no-underline"
+        >
+          <Icon name="ri:trophy-line" />
+          <span>{award.text}</span>
+        </a>
       )
     }
     <div class="flex flex-row flex-wrap justify-center gap-x-8 gap-y-4">
